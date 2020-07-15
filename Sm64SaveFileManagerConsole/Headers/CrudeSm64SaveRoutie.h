@@ -10,8 +10,9 @@ void doNothing() {}
 int counter=-1;
 struct MenuSave {
 	uint32_t CoinScoreAge[4];
-	uint16_t soundMode;
-	uint8_t fillerPadding[8];
+	uint8_t soundMode;
+	uint8_t Language;
+	uint8_t fillerPadding[10];
 	uint16_t magic;
 	uint16_t checkSum;
 };
@@ -66,16 +67,16 @@ struct eep {
 		return cTmp;
 	}
 	uint8_t l8(std::deque<unsigned char> *Input) {
-		counter += 1;
 		return char_to_int8(getCar(Input));
 	}
 	uint16_t l16(std::deque<unsigned char>* Input) {
-		counter += 2;
 		return char_to_int16(getCar(Input), getCar(Input));
 	}
 	uint32_t l32(std::deque<unsigned char>* Input) {
-		counter += 4;
 		return char_to_long(getCar(Input), getCar(Input), getCar(Input), getCar(Input));
+	}
+	uint16_t calcChecksum(eep eepRom) {
+		//Add Implementation
 	}
 	eep(std::deque<unsigned char> Input) {  
 		if (1) { this->MenuSaves; }
@@ -96,22 +97,23 @@ struct eep {
 				for (unsigned int i3 = 0; i3 < 15; i3++) { //COURCE COIN SCORES
 					SELECTED_SAVE_FILE.coinCourses[i3] = this->l8(&Input);
 				}
-				if (1) {}
 				SELECTED_SAVE_FILE.magic = this->l16(&Input);
 				SELECTED_SAVE_FILE.checkSum = this->l16(&Input);
 			}
 		}
-		int cnthere = counter;
 		for (unsigned int i1 = 0; i1 < 2; i1++) { //Menu
 			for (unsigned int i2 = 0; i2 < 4; i2++) {
-				this->MenuSaves[i1].CoinScoreAge[i2] = l32(&Input);
+				this->MenuSaves[i1].CoinScoreAge[i2] = l32(&Input); //16 Bytes
 			}
-			this->MenuSaves[i1].soundMode = l16(&Input);
-			this->MenuSaves[i1].magic = this->l16(&Input);
-			this->MenuSaves[i1].checkSum = this->l16(&Input);
+			this->MenuSaves[i1].soundMode = l8(&Input); //1 Bytes
+			this->MenuSaves[i1].Language = l8(&Input); //1 byte
+			for (unsigned int i2 = 0; i2 < 10;i2++) {
+				this->MenuSaves[i1].fillerPadding[i2] = l8(&Input); //10 bytes
+			}
+			this->MenuSaves[i1].magic = this->l16(&Input); //2 Bytes
+			this->MenuSaves[i1].checkSum = this->l16(&Input); //2 Bytes
+			//Total 30
 		}
-		std::cout << "\n" << cnthere - counter;
-		system("pause");
 	}
 	struct IntExporter {
 		std::string fn;
@@ -146,29 +148,43 @@ struct eep {
 	};
 
 	void EepRomExport(std::string fn,bool edian) {
-		std::cout << "\nHello: " << edian;
-		system("pause");
+		system("cls");
+		std::cout << "Exporting...\n";
 		IntExporter exporter(fn, edian);
 		if (1) { std::fstream File(fn, std::ios::out); File << ""; File.close(); }
-
 		for (unsigned int CURRENT_SAVE = 0; CURRENT_SAVE < MAX_SAVES; CURRENT_SAVE++) { //Save Files
 			for (unsigned int BACKUP_TYPE = 0; BACKUP_TYPE < 2; BACKUP_TYPE++) {
-				exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.capLevel) ;
-				exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.capArea) ;
-				exporter.ExportInt<uint16_t>(SELECTED_SAVE_FILE.capPos[1]) ;
-				exporter.ExportInt<uint16_t>(SELECTED_SAVE_FILE.capPos[2]) ;
-				exporter.ExportInt<uint16_t>(SELECTED_SAVE_FILE.capPos[3]) ;
-				exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.CastleSecrets) ;
-				exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[0]) ;
-				exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[1]);
-				exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[2]) ;
+				exporter.ExportInt<uint8_t>((uint8_t)0) ;
+				exporter.ExportInt<uint8_t>((uint8_t)0) ;
+				exporter.ExportInt<uint16_t>((uint16_t)0) ;
+				exporter.ExportInt<uint16_t>((uint16_t)0) ;
+				exporter.ExportInt<uint16_t>((uint16_t)0) ;
+				if (!edian) {
+					system("cls");
+					std::cout << "bin";
+					system("pause");
+					system("cls");
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[2]);
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[1]);
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[0]);
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.CastleSecrets);
+				}
+				else {
+					system("cls");
+					std::cout << "eep";
+					system("pause");
+					system("cls");
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.CastleSecrets);
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[0]);
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[1]);
+					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.Flags[2]);
+				}
 				for (unsigned int i3 = 0; i3 < 25; i3++) { //COURCE DATA
 					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.CourseDat[i3]);
 				}
 				for (unsigned int i3 = 0; i3 < 15; i3++) { //COURCE COIN SCORES
 					exporter.ExportInt<uint8_t>(SELECTED_SAVE_FILE.coinCourses[i3]);
 				}
-				if (1) {}
 				exporter.ExportInt<uint16_t>(SELECTED_SAVE_FILE.magic);
 				exporter.ExportInt<uint16_t>(SELECTED_SAVE_FILE.checkSum);
 			}
@@ -177,12 +193,15 @@ struct eep {
 			for (unsigned int i2 = 0; i2 < 4; i2++) {
 				exporter.ExportInt<uint32_t>(this->MenuSaves[i1].CoinScoreAge[i2]);
 			}
-			exporter.ExportInt<uint16_t>(this->MenuSaves[i1].soundMode) ;
+			exporter.ExportInt<uint8_t>(this->MenuSaves[i1].soundMode) ; 
+			exporter.ExportInt<uint8_t>(this->MenuSaves[i1].Language);
+			for (unsigned int i2 = 0; i2 < 10; i2++) {
+				exporter.ExportInt<uint8_t>(this->MenuSaves[i1].fillerPadding[i2]);
+			}
 			exporter.ExportInt<uint16_t>(this->MenuSaves[i1].magic);
 			exporter.ExportInt<uint16_t>(this->MenuSaves[i1].checkSum);
-			doNothing();
-
 		}
+		std::cout << "File Exported!\n";
 		system("pause");
 	}
 };

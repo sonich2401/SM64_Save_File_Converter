@@ -13,7 +13,6 @@
 #include "Headers/CrudeSm64SaveRoutie.h"
 #include "Headers/SM64/bitsruff.h"
 std::string Input;
-std::map<std::string,sm64Val*> SaveData;
 bool SaveDataType;
 std::vector<unsigned char> SaveDat;
 std::deque<unsigned char> VecToDe;
@@ -24,10 +23,10 @@ int MainMenu() {
 		+ Bar()
 			+ ListItem("Load Save File", 1)
 			+ ListItem("Export Save", 2)
-			+ ListItem("Convert Save", 3)
-			+ ListItem("Veiw Raw Data",4)
+			+ ListItem("Veiw Raw Data",3)
+			+ ListItem("Veiw Orgainzed Data",4)
 	);
-	return iGetMessage(5);
+	return iGetMessage(4);
 }
 bool EdiannessMenu() {
 	SendNewMessage(
@@ -44,18 +43,14 @@ bool EdiannessMenu() {
 	}
 	//return 1;
 }
-void Organize() {
-	SaveData["Mario"] = new sm64_t::CHAR((unsigned char)'a');
-}
 void LoadSM64File() {
 	SaveDat = LoadHex(sb::openfn("Open Save File"));
-	SaveDataType = EdiannessMenu();
+	////SaveDataType = EdiannessMenu();
 }
 void ExportSM64File() {
 	std::string fn = sb::savefn("Choose Save Location and Name");
-	SaveDataType = EdiannessMenu();
 	if (testSaveLoad != nullptr) {
-		testSaveLoad->EepRomExport(fn, SaveDataType);
+		testSaveLoad->EepRomExport(fn, EdiannessMenu());
 	}
 }
 void ConvertEdianness() {
@@ -67,27 +62,25 @@ int main()
 		switch (MainMenu()) {
 		case 1:
 			LoadSM64File();
+			VecToDe.clear();
+			for (unsigned int banana = 0; banana < 512; banana++) {
+				VecToDe.push_back(SaveDat[banana]);
+			}
+			testSaveLoad = new eep(VecToDe);
 			break;
 		case 2:
 			ExportSM64File();
 			break;
 		case 3:
-			ConvertEdianness();
-			break;
-		case 4:
 			system("cls");
 			for (unsigned int i = 0; i < 512; i++) {
-				std::cout << " " + std::to_string(SaveDat[i]);
+				std::cout << " " << std::hex << SaveDat[i];
 			}
 			system("pause");
 			break;
-		case 5:
-			for (unsigned int banana = 0; banana < 512; banana++) {
-				VecToDe.push_back(SaveDat[banana]);
-			}
-			testSaveLoad = new eep(VecToDe);
+		case 4:
 			system("cls");
-			displayCourseData(*testSaveLoad,0);
+			displayCourseData(*testSaveLoad, 0);
 			system("pause");
 			break;
 		default:
