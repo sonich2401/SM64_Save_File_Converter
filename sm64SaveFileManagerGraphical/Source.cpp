@@ -8,7 +8,12 @@
 #include "Headers/FileSys.h"
 #include "Headers/Sprite.h"
 #include "Headers/TextHelp.h"
+#if defined(__linux__) || defined(__MINGW32__) || defined(__EMSCRIPTEN__) || defined(__FreeBSD__)
+#include "Headers/Linux.h"
+#else 
 #include "Headers/WindowsFileSys.h"
+#endif
+
 #include "Headers/SM64/Char_to_Type.h"
 #include "Headers/CrudeSm64SaveRoutie.h"
 #include "Headers/SM64/bitsruff.h"
@@ -285,7 +290,11 @@ int FileSelect(int x) {
 }
 
 void initSave() {
+#if defined(__linux__) || defined(__MINGW32__) || defined(__EMSCRIPTEN__) || defined(__FreeBSD__)
+	SaveDat = LoadHex("./InFile.sav");
+#else
 	SaveDat = LoadHex(sb::openfn("Open SM64 Save File"));
+#endif
 	VecToDe.clear();
 	for (unsigned int i = 0; i < 512; i++) {
 		VecToDe.push_back(SaveDat[i]);
@@ -476,13 +485,29 @@ public:
 					CurrentSaveFile.SaveFiles[i][0].Flags[2] = CurrentSaveFile.SaveFiles[i][0].Flag2.to_int();
 					CurrentSaveFile.SaveFiles[i][0].checkSum = CurrentSaveFile.calcChecksum(i,  CurrentSaveFile.detectEdianess(SaveDat));
 				}
+#if defined(__linux__) || defined(__MINGW32__) || defined(__EMSCRIPTEN__) || defined(__FreeBSD__)
+				std::string tmpStringl = "";
+				std::cout << "Enter The Exported Save File Path\n";
+				std::getline(std::cin, tmpStringl);
+				ExportFN = tmpStringl;
+#else
 				ExportFN = sb::savefn("Save SM64 Save File");
+#endif
+				
 				this->Clear(olc::GREY);
 				this->DrawString({ 0,0 }, "Exporting...", olc::BLACK, 4);
 				exportSt = 1;
 			}	
 			break;
 		case 1:
+			if (GetKey(olc::F1).bPressed) {
+				std::fstream File("./Credits.crdts", std::ios::in | std::ios::binary);
+				std::string line;
+				while (std::getline(File,line)) {
+					std::cout << line << '\n';
+				}
+				File.close();
+			}
 			if (GetMouse(0).bPressed) {
 				if (GetMouseX() < 100)
 					if (GetMouseY() < 100)
@@ -509,7 +534,7 @@ public:
 			}
 			for (unsigned int i = 0; i < 15; i++) {
 				float loc = (150 * i) - Scroll;
-				if (loc > -120 && loc < 500) {
+				if (loc > -120 && loc < this->GetDrawTargetHeight()) {
 					std::bitset<8> StarSettmp(CurrentSaveFile.SaveFiles[currentFile][0].CourseDat[i]);
 					this->DrawStringDecal({ 12,loc }, getName(i), olc::BLACK);
 					paintings[i].DrawMe(this, 12, loc);
@@ -554,7 +579,7 @@ public:
 					}
 					for (unsigned int i1 = 0; i1 < 7; i1++) {
 						int tmpx = 147 + (i1 * 75), tmpy = loc + 32;
-						starBool[unsigned int(CurrentFileStarDat[i][i1])]->Sprite.DrawToScreen(this, tmpx, tmpy,0.2,0.2);
+						starBool[(unsigned int)CurrentFileStarDat[i][i1]]->Sprite.DrawToScreen(this, tmpx, tmpy,0.2,0.2);
 					}
 					Coin->Sprite.DrawToScreen(this, 672, loc + 32, 0.2, 0.2);
 					this->DrawStringDecal({ 672 + 75,loc + 32 }, std::to_string(CurrentSaveFile.SaveFiles[currentFile][0].coinCourses[i]), olc::BLACK, { 2,2 });
@@ -620,7 +645,16 @@ public:
 };
 int main() {
 	sm64SaveFileManager window;
-	if (window.Construct(1000 / SCREEN_SCALAR, 500 / SCREEN_SCALAR, SCREEN_SCALAR, SCREEN_SCALAR)) {
+	uint16_t sze[2];
+	std::fstream File("./default.config", std::ios::in | std::ios::binary);
+	std::string line;
+	uint8_t num = -1;
+	while (std::getline(File, line)) {
+		num++;
+		sze[num] = std::stoi(line);
+	}
+	File.close();
+	if (window.Construct(sze[0], sze[1], SCREEN_SCALAR, SCREEN_SCALAR,false,true)) {
 		window.Start();
 	}
 	return 0;

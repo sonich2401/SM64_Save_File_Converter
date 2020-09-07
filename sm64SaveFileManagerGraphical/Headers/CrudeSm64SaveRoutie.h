@@ -183,6 +183,7 @@ struct eep {
 		}
 		for (unsigned int i1 = 0; i1 < sizeof(Number); i1++)
 			return buff[Index[pos]];
+		return 0;
 	}
 	uint16_t calcChecksum(unsigned char SaveFileNum,bool edian) {
 		//Add Implementation

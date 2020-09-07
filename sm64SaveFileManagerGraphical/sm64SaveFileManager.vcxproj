@@ -218,6 +218,7 @@
     <ClInclude Include="Headers\BitStream.h" />
     <ClInclude Include="Headers\CrudeSm64SaveRoutie.h" />
     <ClInclude Include="Headers\FileSys.h" />
+    <ClInclude Include="Headers\Linux.h" />
     <ClInclude Include="Headers\olcPGEX_AnimatedSprite.h" />
     <ClInclude Include="Headers\olcPGEX_Graphics2D.h" />
     <ClInclude Include="Headers\olcPixelGameEngine.h" />
