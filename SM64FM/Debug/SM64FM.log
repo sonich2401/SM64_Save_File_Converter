@@ -1,0 +1,3 @@
+﻿  load_file.c
+C:\Users\mener\OneDrive\Desktop\SM64FM\src\util\load_file\load_file.c(44): warning C4716: 'loadTextFile': must return a value
+  SM64FM.vcxproj -> C:\Users\mener\OneDrive\Desktop\SM64FM\Debug\SM64FM.exe
