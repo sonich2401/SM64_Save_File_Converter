@@ -1,4 +1,5 @@
 //Check EEPROM.c for the values of the header
+#pragma once
 #include <typedefs.h>
 #include <stdlib.h>
 #include <string.h>
