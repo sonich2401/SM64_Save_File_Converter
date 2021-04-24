@@ -4,8 +4,6 @@ A file save converter that takes a .eep file save from an emulator and converts 
 # Compiling
 #### Linux
     To compile, use the provieded make file. 
-    There should be some ld warnings and those are expected. 
-    It is a warning that (as of the current version of gcc) doesn't effect the program at all.
 #### Windows
     As of the current Commit, there is no full windows support. 
     There is C functions that have safty checks 
