@@ -16,3 +16,8 @@ SM64FM/x64/Debug/SM64FM.vcxproj.FileListAbsolute.txt
 *.enc
 *.user
 *.exe
+*.db
+*.user
+*.filters
+*.sqlite
+*.json
