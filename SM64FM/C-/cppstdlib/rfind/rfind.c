@@ -1,5 +1,5 @@
 #include "rfind.h"
-
+#ifdef RFIND_H
 /*
 int32 rfind(string src, string find, uint32 offset)
 {
@@ -34,3 +34,4 @@ int32 rfind(string src, string filter, uint32 offset){
     }
     return ret  - src;
 }
+#endif

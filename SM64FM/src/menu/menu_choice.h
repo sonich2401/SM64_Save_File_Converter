@@ -22,9 +22,9 @@ typedef struct {
 }directory;
 
 
-const directory root;
-const directory edit_game_save;
-const directory edit_menu_save;
+extern const directory root;
+extern const directory edit_game_save;
+extern const directory edit_menu_save;
 const directory edit_game_flags;
 const directory halt; 
 

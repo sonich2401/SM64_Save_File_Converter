@@ -23,3 +23,6 @@ SM64FM/x64/Debug/SM64FM.vcxproj.FileListAbsolute.txt
 *.json
 SM64FM/SM64FM
 SM64FM/out.eep
+*.o
+*.eep
+SM64FM/SM64FM
