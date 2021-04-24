@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\mener\OneDrive\Desktop\SM64FM;%(AdditionalIncludeDirectories);C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mener\OneDrive\Documents\GitHub\SM64_Save_File_Converter\SM64FM;C:\Users\mener\OneDrive\Desktop\SM64FM;%(AdditionalIncludeDirectories);C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -103,7 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\mener\OneDrive\Desktop\SM64FM;%(AdditionalIncludeDirectories);C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mener\OneDrive\Documents\GitHub\SM64_Save_File_Converter\SM64FM;C:\Users\mener\OneDrive\Desktop\SM64FM;%(AdditionalIncludeDirectories);C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mener\OneDrive\Documents\GitHub\SM64_Save_File_Converter\SM64FM;;C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>;C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mener\OneDrive\Documents\GitHub\SM64_Save_File_Converter\SM64FM;;C:\Users\mener\OneDrive\Desktop\SM64FM</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

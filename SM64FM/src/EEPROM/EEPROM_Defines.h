@@ -5,7 +5,7 @@
 
 typedef struct{
     const string name;
-    const string acts[6];
+    const string acts[7];
 }course_str_struct;
 
 #ifndef STR_COURSE_SIZE

@@ -15,7 +15,13 @@
 
 
 void print_usage(){
-    printf("%s - v%.3f, Build Date: %s\n",PROG_NAME, VER, DATE);
+    //"SM64FM - v0.000, Build Date: Fri Apr 23 00:45:20 PDT 2021"
+    colstr(printf("%s", PROG_NAME), T_RED);
+    printf(" - v%.3f, ",VER);
+    colstr(printf("Build Date: "), T_GREEN);
+    printf("%s\n", DATE);
+    //
+
     
     printf(
     "    Useage:\n"

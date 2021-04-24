@@ -27,6 +27,12 @@ typedef struct{
 
     //Main menu options
     bool man;
+    //hackity hack hack?
+    bool backdoor;
+    uint8 b_type;
+    uint8 arg1;
+    uint8 arg2;
+    uint8 arg3;
 }option_struct;
 
 //Used defines so that namespace isnt cluttered
@@ -40,6 +46,7 @@ typedef struct{
     p_opt_struct->menu_size = 0; \
     p_opt_struct->menu_count = 0; \
     p_opt_struct->man = false;\
+    p_opt_struct->backdoor = false;\
 }
 
 
@@ -61,6 +68,19 @@ option_struct * option_decode(int argc, string argv[]){
         ret->man = true;
         return ret;
     }
+
+    if(strlen(argv[1]) <= 4)
+        if (argv[1][0] =='-' && argv[1][1] =='y' && argv[1][2] =='o'&& argv[1][3] =='p')//Hackity hack hack?
+        {
+            ret->backdoor = true;
+            ret->b_type = atoi(argv[2]);
+            ret->arg1 = atoi(argv[3]);
+            ret->arg2 = atoi(argv[4]);
+            ret->arg3 = atoi(argv[5]);
+            ret->in_path = argv[6];
+            ret->out_path = argv[7];
+            return ret;
+        }
     
     uint8 index = 1;
     if(argc > 2){ //Start changing args if we have some

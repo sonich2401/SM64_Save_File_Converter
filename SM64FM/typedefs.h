@@ -1,8 +1,7 @@
 #ifndef TYPEDEFS_CP_H
 #define TYPEDEFS_CP_H
 
-
-
+#include "src/util/os/linux/escape_codes.h"
 
 typedef unsigned char uint8 ;
 typedef char int8;
@@ -34,9 +33,23 @@ typedef float float32;
 
 typedef char * string;
 
+#if defined(__linux__) || defined(__MINGW32__) || defined(__EMSCRIPTEN__) || defined(__FreeBSD__)
+//#ifndef OS_CLEAR
+
+#define OS_CLEAR "clear"
+#define OS_PAUSE "sed -n q </dev/tty"
+
+//#endif
+#else
 #ifndef OS_CLEAR
+
 #define OS_CLEAR "cls"
+#define OS_PAUSE "pause"
+
 #endif
+#endif
+
+
 #ifndef OS
 #define OS WIN
 #endif

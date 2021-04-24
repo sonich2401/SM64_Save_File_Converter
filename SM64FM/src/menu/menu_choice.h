@@ -29,10 +29,11 @@ const directory halt;
 void menu_ask(directory * dir, string name){
     string dir_printout;
     if(name == NULL){
-        name = "root >";
+        name = "root >\0";
     }
     dir_printout = malloc(300);
     strcpy(dir_printout, name);
+    dir_printout[strlen(name)] = '\0';
     
     while(true){
         //UI
@@ -139,24 +140,85 @@ void menu_edit_cap_data(){
     }
 }
 
-void menu_edit_star(){
-    printf("Which course to Edit?\n");
-    for(uint8 i = 0; i < 15; i++){
-        printf("%i. %s ", i + 1, str_courses[i].name);
-        for(uint8 i1 = 0; i1 < 7; i1++){
-            if(get_bit8(eeprom->game_saves[*current_save][0].CourseDat[i], i1)){
-                printf("*");
-            }else{
-                printf("o");
+
+void menu_edit_course(uint8 course){
+    string * act_names = str_courses[course].acts;
+    const string format = "%i. %s\n";
+    while(1){
+        system(OS_CLEAR);
+        for(uint8 i = 0; i < 7; i++){
+            string act_name = act_names[i];
+            if(get_bit8(eeprom->game_saves[*current_save][0].CourseDat[course], i)){
+                colstr(printf(format, i+1, act_name), T_YELLOW);
+                continue;
             }
+            printf(format, i+1, act_name);
         }
-        if(get_bit8(eeprom->game_saves[*current_save][0].CourseDat[i], 7)){
-            printf("[#]\n");
+
+
+        uint8 choice;
+        colstr(printf("\nYour Choice (Enter 0 to leave): "),T_CYAN);
+        scanf("%hhi", &choice);
+        printf("\n");
+        if(choice > 7){ //ERROR CHECKING
+            system(OS_CLEAR);
+            colstr(printf("ERROR: "), T_RED);
+            printf("INVALID STAR!\nPress Enter to continue...\n");
+            system(OS_PAUSE);
+            system(OS_CLEAR);
             continue;
         }
-        printf("[ ]\n");
+        if(choice != 0){
+            bool old_val = get_bit8(eeprom->game_saves[*current_save][0].CourseDat[course], choice-1);
+            set_bit8(&eeprom->game_saves[*current_save][0].CourseDat[course], choice-1,!old_val);//toggle bit
+            continue;
+        }
+        return;
     }
-    while(1){}
+}
+
+
+
+void menu_edit_star(){
+    while(1){
+        printf("Which course to Edit?\n");
+        for(uint8 i = 0; i < 15; i++){
+            int chars_printed = 0;
+            chars_printed = printf("%i. %s ", i + 1, str_courses[i].name);
+            for(uint8 i1 = 0; i1 < 27 - chars_printed; i1++){ //Make sure everything is printed on the same collom
+                printf(" ");
+            }
+            for(uint8 i1 = 0; i1 < 7; i1++){
+                if(get_bit8(eeprom->game_saves[*current_save][0].CourseDat[i], i1)){
+                    colstr(printf("* "),T_YELLOW);
+                }else{
+                    printf("* ");
+                }
+            }
+            if(!get_bit8(eeprom->game_saves[*current_save][0].CourseDat[i], 7)){
+                colstr(printf("[#]\n"), T_RED);
+                continue;
+            }
+            printf("[ ]\n");
+        }
+    
+        uint8 choice;
+        colstr(printf("\nYour Choice (Enter 0 to leave): "),T_CYAN);
+        scanf("%hhi", &choice);
+        if(choice > 15){ //ERROR CHECKING
+            system(OS_CLEAR);
+            colstr(printf("ERROR: "), T_RED);
+            printf("INVALID COURSE!\nPress Enter to continue...\n");
+            system(OS_PAUSE);
+            system(OS_CLEAR);
+            continue;
+        }
+        if(choice == 0){ //Exit the menu
+            break;
+        }
+        menu_edit_course(choice-1);
+        break;
+    }//END OF WHILE
 }
 
 const directory edit_game_save = {

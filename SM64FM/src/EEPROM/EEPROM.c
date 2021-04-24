@@ -33,31 +33,34 @@ const course_str_struct str_courses[15] =
             "Shoot to the Island in the Sky",
             "Find the 8 Red Coins",
             "Mario Wings to the Sky",
-            "Behind Chain Chomp's Gate"
+            "Behind Chain Chomp's Gate",
+            "100 Coin Star"
         }
     },
 
     {
-        "WHOMP'S FORTRESS",
+        "Whomp's Fortress",
         {
-            "Big Bob-omb on the Summit",
-            "Footrace with Koopa the Quick",
-            "Shoot to the Island in the Sky",
-            "Find the 8 Red Coins",
-            "Mario Wings to the Sky",
-            "Behind Chain Chomp's Gate"
+            "Chip off Whomp's Block",
+	        "To The Top of The Fortress",
+	        "Shoot Into The Wild Blue",
+       	    "Red Coins on The Floating Isle",
+	        "Fall Onto The Caged Island",
+	        "Blast Away The Wall",
+            "100 Coin Star"
         }
     },
 
     {
-        "JOLLY ROGER BAY",
+        "Jolly Rodger Bay",
         {
-            "Big Bob-omb on the Summit",
-            "Footrace with Koopa the Quick",
-            "Shoot to the Island in the Sky",
-            "Find the 8 Red Coins",
-            "Mario Wings to the Sky",
-            "Behind Chain Chomp's Gate"
+            "PLUNDER IN THE SUNKEN SHIP",
+            "CAN THE EEL COME OUT TO PLAY?",
+            "TREASURE OF THE OCEAN CAVE",
+            "RED COINS ON THE SHIP AFLOAT",
+            "BLAST TO THE STONE PILLAR",
+            "THROUGH THE JET STREAM",
+            "100 Coin Star"
         }
     },
 
