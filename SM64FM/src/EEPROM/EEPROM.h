@@ -8,7 +8,7 @@
 
 struct flag;
 typedef struct {
-	uint32 CoinScoreAge[4];
+	uint32 CoinScoreAge[4]; //uint8 [16]
 	uint8 soundMode;
 	uint8 Language;
 	uint8 fillerPadding[10];
@@ -144,11 +144,11 @@ void set_coins_age_name(string name, uint8 val);
 //Gets the sound setting for the menu
 uint8 get_sound_setting(uint8 menu);
 
-//Get the selected language setting
-uint8 get_langage(uint8 menu);
-
 //Sets the sound setting for the menu
 void set_sound_setting(uint8 menu, uint8 val);
 
+//Get the selected language setting
+uint8 get_language(uint8 menu);
+
 //Set the selected language setting
-void set_langage(uint8 menu, uint8 val);
+void set_language(uint8 menu, uint8 val);

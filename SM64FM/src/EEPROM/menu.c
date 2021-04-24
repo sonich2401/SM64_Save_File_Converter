@@ -6,7 +6,7 @@ uint8 get_sound_setting(uint8 menu){
 }
 
 //Get the selected language setting
-uint8 get_langage(uint8 menu){
+uint8 get_language(uint8 menu){
     return eeprom->menu_saves[menu].Language;
 }
 
@@ -16,6 +16,6 @@ void set_sound_setting(uint8 menu, uint8 val){
 }
 
 //Set the selected language setting
-void set_langage(uint8 menu, uint8 val){
+void set_language(uint8 menu, uint8 val){
     eeprom->menu_saves[menu].Language = val;
 }
