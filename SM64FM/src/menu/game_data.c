@@ -53,6 +53,8 @@ void menu_edit_cap_data(){
 void menu_edit_level_coin(){
 
     int8 choice = menu_choose_star();
+    if(choice == -1){return;} //Exit was selected
+    
     system(OS_CLEAR);
     printf("Please enter new coin value (prevoius = ");
     colstr(printf("%i", get_coins_index(choice)),T_YELLOW);

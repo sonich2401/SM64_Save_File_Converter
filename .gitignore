@@ -21,3 +21,5 @@ SM64FM/x64/Debug/SM64FM.vcxproj.FileListAbsolute.txt
 *.filters
 *.sqlite
 *.json
+SM64FM/SM64FM
+SM64FM/out.eep
