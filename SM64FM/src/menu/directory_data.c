@@ -66,6 +66,35 @@ NULL,
 };
 
 
+//GAME FLAG OPTIONS
+const directory edit_game_flags = {
+    NULL,
+    4,
+    {
+        {
+            "Edit Coin Score Ages",
+            menu_coin_age_edit,
+            NULL
+        },
+        {
+            "Edit Sound Type",
+            menu_choose_sound,
+            NULL
+        },
+        {
+            "Edit Langage \033[0;31m(NON - U.S. VERSIONS)\033[0m",
+            menu_choose_lang,
+            NULL
+        },
+        {
+            "Back",
+            NULL,
+            NULL
+        }
+    }
+};
+
+
 const directory root = {
     NULL,
     4,

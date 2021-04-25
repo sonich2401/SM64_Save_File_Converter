@@ -25,7 +25,7 @@ typedef struct {
 extern const directory root;
 extern const directory edit_game_save;
 extern const directory edit_menu_save;
-const directory edit_game_flags;
+extern const directory edit_game_flags;
 const directory halt; 
 
 
@@ -39,6 +39,8 @@ void menu_edit_cap_data();
 void menu_edit_course(uint8 course);
 
 void menu_edit_star();
+
+void menu_print_courses(); //VERY USEFUL FUNCTION
 
 int8 menu_choose_star();
 
