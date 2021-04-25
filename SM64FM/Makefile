@@ -48,6 +48,7 @@ DEFINES = $(foreach def,$(DEFINES_DEF), $(DEFINE_PREFIX)D$(def))
 
 all:
 	@$(MAKE) message --no-print-directory
+	@mkdir build
 	@$(MAKE) compile --no-print-directory
 message:
 	@echo Building ...
