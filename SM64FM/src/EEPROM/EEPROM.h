@@ -30,6 +30,7 @@ typedef struct {
     uint32 GameFlags; //C Secrets, Flags[3]
 
 	uint8 CourseDat[25];
+  uint8 CastleSecretStar[10];
 	uint8 coinCourses[15];
 	uint16 magic;
 	uint16 checkSum;
@@ -152,3 +153,18 @@ uint8 get_language(uint8 menu);
 
 //Set the selected language setting
 void set_language(uint8 menu, uint8 val);
+
+
+//secret.c 
+
+//Get the value of the castle secret star from the given index
+bool get_secret(uint8 index, uint8 bit);
+
+//Get the value of the castle secret star from the given name
+bool get_secret_name(string name);
+
+//Set the castle secret star from the given index
+void set_secret(uint8 index, uint8 val);
+
+//Set the castle secret star from the given name
+void set_secret_name(string name, uint8 val);

@@ -13,6 +13,10 @@ typedef struct{
 #define STR_COURSE_SIZE 15
 #endif
 
+#ifndef STR_SECRET_SIZE
+#define STR_SECRET_SIZE 100
+#endif
+
 extern const course_str_struct str_courses[STR_COURSE_SIZE];
 
 typedef struct {
@@ -22,7 +26,7 @@ typedef struct {
 }flag_str_struct;
 
 #ifndef STR_FLAGS_SIZE
-#define STR_FLAGS_SIZE 25
+#define STR_FLAGS_SIZE 27
 #endif
 
 extern const flag_str_struct str_flags[STR_FLAGS_SIZE];

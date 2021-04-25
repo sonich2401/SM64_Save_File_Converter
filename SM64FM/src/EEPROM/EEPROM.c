@@ -54,12 +54,12 @@ const course_str_struct str_courses[15] =
     {
         "Jolly Rodger Bay",
         {
-            "PLUNDER IN THE SUNKEN SHIP",
-            "CAN THE EEL COME OUT TO PLAY?",
-            "TREASURE OF THE OCEAN CAVE",
-            "RED COINS ON THE SHIP AFLOAT",
-            "BLAST TO THE STONE PILLAR",
-            "THROUGH THE JET STREAM",
+            "Plunder In The Sunken Ship",
+            "Can The EEL Come Out To Play?",
+            "Treasure Of The Ocean Cave",
+            "Red Coins On The Ship AFloat",
+            "Blast To The Stone Pillar",
+            "Through The Jet Stream",
             "100 Coin Star"
         }
     },
@@ -286,130 +286,145 @@ SECRET_STAR(COURSE_CAKE_END, _(""))
 
 const flag_str_struct str_flags[STR_FLAGS_SIZE] ={
     {
-        "NULL",
-        0,
+        "Toad 1",
+        0x8,
         0
     },
     {
-        "NULL",
-        0,
+        "Toad 2",
+        0x8,
+        2
+    },
+    {
+        "Toad 3",
+        0x8,
+        3
+    },
+    {
+        "MIPS 1",
+        0x8,
+        1
+    },
+    {
+        "MIPS 2",
+        0x8,
+        4
+    },
+    {
+        "Snow",
+        0x9,
         0
     },
     {
-        "NULL",
-        0,
-        0
+        "Monkey",
+        0x9,
+        2
     },
     {
-        "NULL",
-        0,
-        0
+        "Bird",
+        0x9,
+        1
     },
     {
-        "NULL",
-        0,
-        0
+        "Star 1,
+        0xA,
+        6
     },
     {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
-    },
-    {
-        "NULL",
-        0,
-        0
+        "Star 2",
+        0xA,
+        7
     },
 
     {
-        "NULL",
+        "Star 3",
+        0x8,
+        4
+    },
+    {
+        "Upstairs",
+        0xB,
+        7
+    },
+    {
+        "Downstairs",
+        0xB,
+        6
+    },
+    {
+        "BOB",
         0,
         0
     },
     {
-        "NULL",
-        0,
+        "WF",
+        0xA,
+        3
+    },
+    {
+        "CCM",
+        0xA,
+        4
+    },
+    {
+        "PSS",
+        0xA,
+        2
+    },
+    {
+        "JRB",
+        0xA,
+        5
+    },
+    {
+        "Key 1",
+        0xB,
+        4
+    },
+    {
+        "Key 2",
+        0xB,
+        5
+    },
+
+    {
+        "DDD",
+        0xA,
         0
     },
     {
-        "NULL",
-        0,
+        "Moat",
+        0xA,
+        1
+    },
+    {
+        "Valid",
+        0xB,
         0
     },
     {
-        "NULL",
-        0,
-        0
+        "Wing",
+        0xB,
+        1
     },
     {
-        "NULL",
-        0,
-        0
-    }
+        "Metal",
+        0xB,
+        2
+    },
+    {
+        "Invis",
+        0xB,
+        3
+    },
+};
+
+
+
+const flag_str_struct str_secret[STR_SECRET_SZIE] = {
+  {
+    "",
+    0x0,
+    0
+  },
 };

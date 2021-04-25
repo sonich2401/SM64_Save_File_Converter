@@ -46,6 +46,8 @@ int8 menu_choose_star();
 
 void menu_edit_level_coin();
 
+void menu_edit_secrets();
+
 //MENU DATA
 
 void menu_choose_lang();
@@ -53,3 +55,14 @@ void menu_choose_lang();
 void menu_choose_sound();
 
 void menu_coin_age_edit();
+
+
+//GAME FLAGS DATA
+
+void menu_set_flags();
+
+void menu_set_door_flags();
+
+void menu_set_progress_flags();
+
+void menu_set_cap_flags();

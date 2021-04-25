@@ -167,3 +167,60 @@ int8 menu_choose_star(){
         return (int8)(choice - 1);
     }//END OF WHILE
 }
+
+
+
+
+
+typedef struct {
+  const string good_name;
+  const string op_name;
+}flag_def;
+
+
+const flag_def doors[9] = {
+  {
+  #if (OS == Linux)
+    "Princess Secret Slide \033[0;33m[!]\033[0m Box",
+  #else
+    "Princess Secret Slide [!] Box",
+  #endif
+    "PSS"
+  },
+  {
+    "Cool Cool Mountain Door",
+    "CMM"
+  },
+  { 
+    "Jolly Rodger Bay Door",
+    "JRB"
+  },
+  {
+    "Princess Secret Slide Door",
+    "PSS"
+  },
+  {
+    "Bowser in the Dark World Door (Star door 1)",
+    "Star 1"
+  },
+  {
+    "Bowser in the Fire Sea (Star door 2)",
+    "Star 2"
+  },
+  {
+    "50 Star Door (Star door 3)",
+    "Star 3"
+  },
+  {
+    "Basement Door",
+    "Basement"
+  },
+  {
+    "Upstairs Door"
+    "Upstairs"
+  }
+};
+
+void menu_edit_secrets(){
+
+}

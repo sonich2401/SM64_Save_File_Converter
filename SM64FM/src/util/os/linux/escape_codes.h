@@ -28,10 +28,12 @@
 #endif
 
     #if defined(__linux__) || defined(__MINGW32__) || defined(__EMSCRIPTEN__) || defined(__FreeBSD__)
+        #define OS Linux
         #define colstr(printf_instr, text_color) \
         printf(text_color); \
         printf_instr; \
         printf(T_RESET);
     #else
+        #define OS Win
         #define colstr(printf_instr, text_color) printf_instr;
     #endif

@@ -72,18 +72,18 @@ const directory edit_game_flags = {
     4,
     {
         {
-            "Edit Coin Score Ages",
-            menu_coin_age_edit,
+            "Open / Close Doors",
+            menu_set_door_flags,
             NULL
         },
         {
-            "Edit Sound Type",
-            menu_choose_sound,
+            "Power Caps",
+            menu_set_cap_flags,
             NULL
         },
         {
-            "Edit Langage \033[0;31m(NON - U.S. VERSIONS)\033[0m",
-            menu_choose_lang,
+            "Progression Flags",
+            menu_set_progress_flags,
             NULL
         },
         {
