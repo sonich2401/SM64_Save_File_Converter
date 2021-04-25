@@ -326,7 +326,7 @@ const flag_str_struct str_flags[STR_FLAGS_SIZE] ={
         1
     },
     {
-        "Star 1,
+        "Star 1",
         0xA,
         6
     },
@@ -347,14 +347,14 @@ const flag_str_struct str_flags[STR_FLAGS_SIZE] ={
         7
     },
     {
-        "Downstairs",
+        "Basement",
         0xB,
         6
     },
     {
-        "BOB",
-        0,
-        0
+        "CCM",
+        0xA,
+        4
     },
     {
         "WF",
@@ -421,10 +421,55 @@ const flag_str_struct str_flags[STR_FLAGS_SIZE] ={
 
 
 
-const flag_str_struct str_secret[STR_SECRET_SZIE] = {
+const flag_str_struct str_secret[STR_SECRET_SIZE] = {
   {
-    "",
-    0x0,
+    "PSS [!]",
+    3,
     0
   },
+  {
+    "PSS 20",
+    3,
+    1
+  },
+  {
+    "Aqua",
+    8,
+    0
+  },
+  {
+    "Bow 1",
+    0,
+    0
+  },
+  {
+    "Bow 2",
+    1,
+    0
+  },
+  {
+    "Bow 3",
+    2,
+    0
+  },
+  {
+    "Wing",
+    5,
+    0
+  },
+  {
+    "Metal",
+    4,
+    0
+  },
+  {
+    "Invis",
+    6,
+    0
+  },
+  {
+    "Rain",
+    7,
+    0
+  }
 };

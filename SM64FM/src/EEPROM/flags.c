@@ -1,5 +1,6 @@
 #include "EEPROM.h"
 #include "EEPROM_Defines.h"
+#include "../util/bitop/bitop.h"
 
 uint8 flags_h_str_to_in(string name){
     for(uint8 i =0; i < STR_FLAGS_SIZE; i++){
@@ -8,6 +9,7 @@ uint8 flags_h_str_to_in(string name){
         }
     }
     printf("ERROR: \"%s\" Not a reconized flag name!\n", name);
+    while(1){}
     return -1;
 }
 
@@ -18,7 +20,7 @@ bool get_flag_name(string name){
 
 //Gets the value of a flag from a given index
 bool get_flag_index(uint8 index){
-    return (*((unsigned char*)eeprom + str_flags[index].byte_offset) & (1 << str_flags[index].bit_offset)) >> str_flags[index].bit_offset;
+  return get_bit32(eeprom->game_saves[*current_save][0].GameFlags, (str_flags[index].byte_offset * 8) + str_flags[index].bit_offset);
 }
 
 //Sets the value of a flag from a given name
@@ -28,5 +30,5 @@ void set_flag_name(string name, bool val){
 
 //Sets the value of a flag from a given index
 void set_flag_index(uint8 index, bool val){
-    *((unsigned char*)eeprom + str_flags[index].byte_offset) &= (val << str_flags[index].bit_offset);
+  return set_bit32(&eeprom->game_saves[*current_save][0].GameFlags, (str_flags[index].byte_offset * 8) + str_flags[index].bit_offset, val);
 }

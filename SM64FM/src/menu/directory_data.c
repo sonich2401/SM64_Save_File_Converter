@@ -9,21 +9,26 @@ extern EEPROM * eeprom;
 //GAME EDIT OPTIONS
 const directory edit_game_save = {
     NULL,
-    4,
+    5,
     {
-        {
-            "Edit Cap Data",
-            menu_edit_cap_data,
-            NULL
-        },
         {
             "Edit Level Data",
             menu_edit_star,
             NULL
         },
         {
+            "Edit Castle Secret Stars",
+            menu_edit_secrets,
+            NULL
+        },
+        {
             "Edit Coin Scores",
             menu_edit_level_coin,
+            NULL
+        },
+        {
+            "Edit Cap Data",
+            menu_edit_cap_data,
             NULL
         },
         {

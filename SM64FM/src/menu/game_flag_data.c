@@ -20,7 +20,7 @@ const flag_def doors[9] = {
   },
   {
     "Cool Cool Mountain Door",
-    "CMM"
+    "CCM"
   },
   { 
     "Jolly Rodger Bay Door",
@@ -47,7 +47,7 @@ const flag_def doors[9] = {
     "Basement"
   },
   {
-    "Upstairs Door"
+    "Upstairs Door",
     "Upstairs"
   }
 };
@@ -112,10 +112,11 @@ const string format = "%i. %s\n";
 
 void local___flag_menu(const flag_def list[], uint8 size){
   while(true){
-    system(OS_CLEAR)
+    system(OS_CLEAR);
     for(uint8 i = 0; i < size; i++){
       if(get_flag_name(list[i].op_name)){
         colstr(printf(format, i+1, list[i].good_name), T_GREEN);
+        continue;
       }
       printf(format, i+1, list[i].good_name);
     }
@@ -126,17 +127,18 @@ void local___flag_menu(const flag_def list[], uint8 size){
     scanf("%hhi", &choice);
 
     if(choice == 0) return;
-    if(choice >= size){
+    if(choice >= size + 1){
       system(OS_CLEAR);
       colstr(printf("ERROR!!!\n"), T_RED);
-      printf("Not a valid option");
+      printf("Not a valid option\n");
+      printf("Press any key to continue ...\n");
       system(OS_PAUSE);
       continue;
     }
 
     choice--;
     bool val = get_flag_name(list[choice].op_name);
-    set_flag_name(lsit[choice].op_name, !val);
+    set_flag_name(list[choice].op_name, !val);
 
   }
 }

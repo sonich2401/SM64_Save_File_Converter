@@ -178,49 +178,87 @@ typedef struct {
 }flag_def;
 
 
-const flag_def doors[9] = {
+
+const flag_def secrets[10] = {
   {
   #if (OS == Linux)
     "Princess Secret Slide \033[0;33m[!]\033[0m Box",
   #else
     "Princess Secret Slide [!] Box",
   #endif
-    "PSS"
+    "PSS [!]"
   },
   {
-    "Cool Cool Mountain Door",
-    "CMM"
+    "Princess Secret Slide 20 sec Speedrun",
+    "PSS 20"
   },
   { 
-    "Jolly Rodger Bay Door",
-    "JRB"
+    "Bowser in the Dark World Red Coins (Bowser 1)",
+    "Bow 1"
   },
   {
-    "Princess Secret Slide Door",
-    "PSS"
+    "Bowser in the Fire Sea Red Coins (Bowser 2)",
+    "Bow 2"
   },
   {
-    "Bowser in the Dark World Door (Star door 1)",
-    "Star 1"
+    "Bowser in the Sky Red Coins (Bowser 3)",
+    "Bow 3"
   },
   {
-    "Bowser in the Fire Sea (Star door 2)",
-    "Star 2"
+    "Mario Wings over the Rainbow",
+    "Rain"
   },
   {
-    "50 Star Door (Star door 3)",
-    "Star 3"
+    "Princess Secret Aquarium",
+    "Aqua"
   },
   {
-    "Basement Door",
-    "Basement"
+    "Wing Cap Red Coins",
+    "Wing"
   },
   {
-    "Upstairs Door"
-    "Upstairs"
+    "Metal Cap Red Coins",
+    "Metal"
+  },
+  {
+    "Vanish Cap Red Coins",
+    "Invis"
   }
 };
 
-void menu_edit_secrets(){
 
+
+
+extern const string format;
+
+void menu_edit_secrets(){
+  while(true){
+    system(OS_CLEAR);
+    for(uint8 i = 0; i < STR_SECRET_SIZE; i++){
+      if(get_secret_name(secrets[i].op_name)){
+        colstr(printf(format, i+1, secrets[i].good_name), T_GREEN);
+        continue;
+      }
+      printf(format, i+1, secrets[i].good_name);
+    }
+    printf("\n");
+    colstr(printf("Please Choose a Option (Enter 0 to leave) "), T_CYAN);
+
+    int8 choice;
+    scanf("%hhi", &choice);
+
+    if(choice == 0) return;
+    if(choice >= 11){
+      system(OS_CLEAR);
+      colstr(printf("ERROR!!!\n"), T_RED);
+      printf("Not a valid option\n");
+      printf("Press any key to continue ...\n");
+      system(OS_PAUSE);
+      continue;
+    }
+
+    choice--;
+    bool val = get_secret_name(secrets[choice].op_name);
+    set_secret_name(secrets[choice].op_name, !val);
+  }
 }

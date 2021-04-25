@@ -164,7 +164,7 @@ bool get_secret(uint8 index, uint8 bit);
 bool get_secret_name(string name);
 
 //Set the castle secret star from the given index
-void set_secret(uint8 index, uint8 val);
+void set_secret(uint8 index, uint8 bit, bool new_val);
 
 //Set the castle secret star from the given name
 void set_secret_name(string name, uint8 val);
