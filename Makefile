@@ -34,7 +34,7 @@ O_FILES = $(abspath $(addprefix $(ODIR)/, $(CPP_FILES:.cpp=.o)))
 
 
 
-VERSION := 0.0
+VERSION := 1.0
 ifeq ($(UNAME), Linux)
 	BUILD := $(shell basename $(CURDIR)).linux
 	DEFINE_PREFIX = -
