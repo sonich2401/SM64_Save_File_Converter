@@ -20,20 +20,17 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 pge::ren::ren(std::string path) {
 	this->spr = new olc::Sprite(path);
 	this->dcl = new olc::Decal(this->spr);
-	assert(this->spr->width != 0);
 }
 
 pge::ren::ren(olc::Sprite * ptr){
 	this->spr = ptr;
 	this->dcl = new olc::Decal(ptr);
-	assert(this->spr->width != 0);
 }
 
 
 pge::ren::ren(unsigned int w, unsigned int h){
 	this->spr = new olc::Sprite(w,h);
 	this->dcl = new olc::Decal(this->spr);
-	assert(this->spr->width != 0);
 }
 
 pge::ren::~ren() {

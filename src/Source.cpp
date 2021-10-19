@@ -153,7 +153,7 @@ void Example::ChangeGamestate(uint8 state){
 
 
 
-int main()
+int main(int argc, char* argv[])
 {
     #ifdef DEBUG
         for(string path : paths){

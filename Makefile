@@ -35,17 +35,15 @@ O_FILES = $(abspath $(addprefix $(ODIR)/, $(CPP_FILES:.cpp=.o)))
 
 
 VERSION := 1.0
-ifeq ($(UNAME), Linux)
-	BUILD := $(shell basename $(CURDIR)).linux
-	DEFINE_PREFIX = -
-	OS_CLEAR = clear
-else
-	BUILD := $(shell basename $(CURDIR)).exe
-	DEFINE_PREFIX = -
-	OS_CLEAR = cls
-endif
+BUILD := sm64sfm
+DEFINE_PREFIX = -
+OS_CLEAR = clear
 
-DEFINES_DEF = DATE="\"`date`\"" VER=\"$(VERSION)\" PROG_NAME=\"$(BUILD)\" OS_CLEAR=\"$(OS_CLEAR)\"
+#ifndef $(INSTALL_PATH)
+#INSTALL_PATH = .
+#endif
+
+DEFINES_DEF := DATE="\"`date`\"" VER=\"$(VERSION)\" PROG_NAME=\"$(BUILD)\" OS_CLEAR=\"$(OS_CLEAR)\"
 
 ifndef $(DEBUG)
 DEBUG = false
@@ -54,6 +52,10 @@ endif
 ifeq ($(DEBUG), true)
 DEFINES_DEF += DEBUG=$(DEBUG)
 CC_ARGS += -g
+endif
+
+ifndef $(INSTALL_PATH)
+DEFINES_DEF += INSTALL_PATH=\"$(INSTALL_PATH)\"
 endif
 
 DEFINES = $(foreach def,$(DEFINES_DEF), $(DEFINE_PREFIX)D$(def))
@@ -75,6 +77,10 @@ $(ODIR)/./%.o : %.cpp
 .PHONY: wine_release
 .PHONY: wine_deubg
 .PHONY: touch_all
+.PHONY: install
+.PHONY: uninstall
+
+.PHONY: delete_path_macro_objects
 
 all: compile run
 	
@@ -92,13 +98,8 @@ message:
 $(ODIR):
 	@mkdir -p $@
 
+$(BUILD): compile
 
-compile1:
-	@$(foreach cc,$(CPP_FILES),  $(shell $(CC) -I $(INCLUDE) $(CC_ARGS) $(DEFINES) -c $(cc) -o $(ODIR)/$(notdir $(basename $(cc)).o)))
-	@$(CC) -o $(BUILD) -I $(INCLUDE) $(CC_ARGS) $(DEFINES) $(O_FILES)
-compile2:
-#@$(CC) -o $(BUILD) -I $(INCLUDE) $(CC_ARGS) $(DEFINES) $(CPP_FILES)
-	@$(CC) $(CPP_FILES) -o $(BUILD) -I $(INCLUDE) -I "Z:/mnt/Windows/Program Files (x86)/CodeBlocks/MinGW/lib/gcc/mingw32/5.1.0/include/c++" $(CC_ARGS) $(DEFINES) 
 run:
 	@./$(BUILD)
 
@@ -109,31 +110,62 @@ clean:
 	@rm -rf Release
 
 
+INSTALL_DIR = /usr/bin/$(BUILD)
+DESKTOP_SHORTCUT_DIR = /usr/share/applications
+install:
+	@$(MAKE) clean --no-print-directory
+	@$(MAKE) compile INSTALL_PATH=\"$(INSTALL_DIR)\" --no-print-directory
+#files belong to root now so allow all users to access them again
+	@chmod -R +rwx build
+#create install location
+	@mkdir -p $(INSTALL_DIR)
+#install exectauable
+	@cp ./$(BUILD) $(INSTALL_DIR)/$(BUILD)
+	@chmod +x $(INSTALL_DIR)/$(BUILD)
+#create an alias
+	@rm -rf /usr/bin/sm64fm
+	@ln -s $(INSTALL_DIR)/$(BUILD) /usr/bin/sm64fm
+
+#install resources
+	@cp -r ./pic $(INSTALL_DIR)/pic
+	@cp -r ./snd $(INSTALL_DIR)/snd
+	@cp ./LICENCE $(INSTALL_DIR)/LICENCE
+	@chmod u=r $(INSTALL_DIR)/LICENCE
+	@chmod -R u=r $(INSTALL_DIR)/pic
+	@chmod -R u=r $(INSTALL_DIR)/snd
+
+#install updater
+	@cp ./linux_only_tools/updater.sh $(INSTALL_DIR)/$(BUILD)_updater.sh
+	@chmod +x $(INSTALL_DIR)/$(BUILD)_updater.sh
+	
+#install desktop/start menu shortcut
+	@cp ./linux_only_tools/$(BUILD).desktop $(DESKTOP_SHORTCUT_DIR)/$(BUILD).desktop
+	@chmod +x $(DESKTOP_SHORTCUT_DIR)/$(BUILD).desktop
+
+	@$(MAKE) clean --no-print-directory
+	@echo Installed Successfully!
+
+uninstall:
+#create install location
+	@rm -rf $(INSTALL_DIR)
+	@rm -f /usr/bin/sm64fm
+
+	@echo Deleted Successfully!
+
 debug:
 	@$(MAKE) DEBUG=true --no-print-directory
 release:
 	@$(MAKE) --no-print-directory
 
-wine_debug:
-	@$(MAKE) UNAME=Windows DEBUG=true --no-print-directory
-wine_release:
-	@$(MAKE) UNAME=Windows --no-print-directory
 
 touch_all:
 	@find . -type f -exec touch {} +
 
-#FOR DEBUGGGING PURPOSES
-print:
-#@echo $(CC) -o $(BUILD) -I $(INCLUDE) $(CC_ARGS) $(DEFINES) $(CPP_FILES)
-	@echo $(CC) $*.cpp -o $@ -I $(INCLUDE) $(CC_ARGS) $(DEFINES)
-	
-print_H:
-	@echo $(H_FILES)
-print_O:
-	@echo $(O_FILES)
-print_C:
-	@echo $(C_FILES)
-print_CPP:
-	@echo $(CPP_FILES)
-print_dir:
-	@echo $(dir include/resource/resources.h)
+restore_rights:
+	@chmod -R +rwx $(BUILD)
+	@chmod -R +rwx pic
+	@chmod -R +rwx snd
+	@chmod -R +rwx src
+
+print_Def:
+	@echo $(DEFINES)

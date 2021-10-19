@@ -1,6 +1,9 @@
 #include "imagelist.h"
 
-#define PNG_PATH "./pic/png"
+
+
+
+
 #define MENU_PATH PNG_PATH "/Menu"
 
 #define PAINTING_PATH PNG_PATH "/Paintings"

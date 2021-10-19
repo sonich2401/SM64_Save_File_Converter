@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=SM64 Save File Manager
+GenericName=SM64 SFM
+Comment=Go mad with this Tetris clone
+Comment[en]=A SM64 save file editor, converter, and repaierer
+Exec=sm64fm
+Terminal=false
+Categories=Utilities
+Keywords=sm64;Super;Mario;64;manager;converter;

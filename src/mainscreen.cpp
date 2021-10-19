@@ -167,8 +167,8 @@ void main_screen::draw_layer1(){
                 continue;
             if(pge->GetMouseX() > (i * SPACING + 150) && pge->GetMouseX() < ((i + 1) * SPACING + 150)){
                 cur_slot = i;
-                MusicSingleton::get().player.AddFile("./snd/mario.ogg", 200, false);
-                MusicSingleton::get().player.AddFile("./snd/paint.ogg", 200, false);
+                MusicSingleton::get().player.AddFile(SND_PATH "/mario.ogg", 200, false);
+                MusicSingleton::get().player.AddFile(SND_PATH "/paint.ogg", 200, false);
                 EEP_DAT::get().update();
             }
             if(pge->GetMouseX() < 120){
@@ -319,7 +319,7 @@ void main_screen::draw_layer2(float fElapsedTime){
             switch (index) {
                 case 15: //Cap switches were clicked
                     if(!(index_x < 3)) break;
-                    MusicSingleton::get().player.AddFile("./snd/box.ogg", 140, false);
+                    MusicSingleton::get().player.AddFile(SND_PATH "/box.ogg", 140, false);
                     switch (index_x) { //couldnt make this a array lookup because you cant take a address of a bitfeild
                         case 0: //vanish cap
                             cap_flags_byte->VanishCapSwitch ^= 1; //toggle bit

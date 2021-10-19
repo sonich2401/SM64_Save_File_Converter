@@ -1,6 +1,14 @@
 #pragma once
 #include <_typedefs.h>
 
+#ifndef INSTALL_PATH
+    #define PNG_PATH "./pic/png"
+    #define SND_PATH "./snd"
+#else //make install
+    #define PNG_PATH INSTALL_PATH "/pic/png"
+    #define SND_PATH INSTALL_PATH "/snd"
+#endif
+
 #if !defined(WIN32) && !defined(_WIN32)
 #define TRUE _TRUE
 #define FALSE _FALSE
