@@ -1,9 +1,7 @@
 #pragma once
 #include <olcPixelGameEngine.h>
 #include <_typedefs.h>
-#include <animation/aniren.h>
-#include <animation/ren.h>
-#include <animation/SprSheet.h>
+#include "animation/Sprite.h"
 #include "screendef.h"
 #include "screensize.h"
 #include "EEPROM/EEPROM.h"

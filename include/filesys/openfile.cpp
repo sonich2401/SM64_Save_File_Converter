@@ -14,7 +14,7 @@
 Contact me at vgngamingnetwork@gmail.com if you need to contact me about this licence*/
 #include "openfile.h"
 
-#if defined(__linux__) || defined(__MINGW32__) || defined(__EMSCRIPTEN__) || defined(__FreeBSD__)
+#if defined(__linux__) 
 #include "os/Linux/Linux.h"
 
 string openFile(string prompt){

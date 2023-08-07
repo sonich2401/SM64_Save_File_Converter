@@ -1,20 +1,12 @@
 #pragma once
-#include <_typedefs.h>
+#include <stddef.h>
+#include <vector>
 
-#ifndef INSTALL_PATH
-    #define PNG_PATH "./pic/png"
-    #define SND_PATH "./snd"
-#else //make install
-    #define PNG_PATH INSTALL_PATH "/pic/png"
-    #define SND_PATH INSTALL_PATH "/snd"
-#endif
+#define USE_STATIC_FILES 1
 
-#if !defined(WIN32) && !defined(_WIN32)
-#define TRUE _TRUE
-#define FALSE _FALSE
-#endif
+enum RESOURCE_ENUM {
+    INVALID_RESOURCE,
 
-enum PNGS{
     BOB,
     WF,
     CCM,
@@ -46,7 +38,7 @@ enum PNGS{
 
 
     //Coin animations
-
+    /*
     C_0,
     C_1,
     C_2,
@@ -55,6 +47,8 @@ enum PNGS{
     C_5,
     C_6,
     C_7,
+    */
+    C_IMG,
     C_FULL,
 
     //Menu Buttons
@@ -99,7 +93,9 @@ enum PNGS{
 
 
     //Star frames
+    STAR_IMG,
     STAR_SHEET,
+    UNSTAR_IMG,
     UNSTAR_SHEET,
 
     //Special assets
@@ -109,9 +105,28 @@ enum PNGS{
     WOOD_GREEN,
     WOOD_RED,
     WOOD_MAGENTA,
-    PEACH_LETTER
+    PEACH_LETTER,
 
+    RESOURCE_ENUM__END,
 };
 
-extern const vector<string>  paths;
+#if USE_STATIC_FILES
+//We need to use C to fix windows runtime errors
+extern "C" {
+    typedef struct {
+        const unsigned char* data;
+        size_t size;
+    }static_file;
+};
+#else
+#include <string>
+typedef const char* static_file;
+#endif
 
+
+struct anipk;
+
+#ifndef RESOURCE_SIZE
+    #define RESOURCES_SIZE (RESOURCE_ENUM__END + 2)
+#endif
+extern const anipk* RESOURCES[RESOURCES_SIZE];

@@ -2,9 +2,9 @@
 Type=Application
 Name=SM64 Save File Manager
 GenericName=SM64 SFM
-Comment=Go mad with this Tetris clone
+Comment=Super Mario 64 Save File editor
 Comment[en]=A SM64 save file editor, converter, and repaierer
-Exec=sm64fm
+Exec=/usr/local/bin/sm64sfm
 Terminal=false
 Categories=Utilities
 Keywords=sm64;Super;Mario;64;manager;converter;

@@ -14,16 +14,15 @@
 Contact me at vgngamingnetwork@gmail.com if you need to contact me about this licence*/
 #include "screendef.h"
 #include "EEPROM/EEPROM.h"
-#include <rman.h>
-#include "../pic/imagelist.h"
+#include <resource/resource_manager.h>
 #include "screensize.h"
 #include "EEPROM/SaveFormats/formats.h"
 
 save_screen::save_screen(Example * olc, uint8 current_slot) : screen(olc, current_slot){
     pge = olc;
 
-    n64 = ADD_REN(PNGS::EMU);
-    pc = ADD_REN(PNGS::PC);
+    n64 = ADD_STATIC_REN(RESOURCE_ENUM::EMU);
+    pc =  ADD_STATIC_REN(RESOURCE_ENUM::PC);
 
     pge->Clear(olc::GREY);
 }
@@ -70,5 +69,4 @@ void save_screen::run(float& fElapsedTime){
 }
 
 save_screen::~save_screen(){
-    rman::get().clear();
 }

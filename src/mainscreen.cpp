@@ -17,13 +17,11 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 #include "screendef.h"
 #include <Sprite.h>
 
-#include "../pic/imagelist.h"
 #include "EEPROM/EEPROM.h"
 #include "screensize.h"
 #include "pgeClass.h"
-#include <Music/MusicSingleton.h>
 
-#include <rman.h>
+#include <resource/resource_manager.h>
 #include <vector>
 
 
@@ -54,24 +52,11 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
             paintings[14] = ADD_STATIC_REN(RR);
 
             //init star animation frames
-            colstars[0] = ADD_STATIC_SPRSHEET(new pge::SprSheet(this->pge, paths[PNGS::UNSTAR_SHEET], {298, 273}), PNGS::UNSTAR_SHEET);
-            colstars[1] = ADD_STATIC_SPRSHEET(new pge::SprSheet(this->pge, paths[PNGS::STAR_SHEET], {298, 273}), PNGS::STAR_SHEET);
-
-            
-            const float star_animation_delay = 0.05;
-            vector<unsigned short> animation_indexes;
-           
-            for(uint16 i = 0; i < 32; i++){
-                animation_indexes.push_back(i);
-            }
-
-            colstars[0]->AddState("root", animation_indexes, star_animation_delay);
-            colstars[1]->AddState("root", animation_indexes, star_animation_delay);
-
+            colstars[0] = ADD_STATIC_SPRSHEET(RESOURCE_ENUM::UNSTAR_SHEET);
+            colstars[1] = ADD_STATIC_SPRSHEET(RESOURCE_ENUM::STAR_SHEET);
 
             //Init coin animations
-            coin = ADD_STATIC_SPRSHEET(new pge::SprSheet(this->pge, paths[PNGS::C_FULL], { 100, 66 }), PNGS::C_FULL);
-            coin->AddState("root", {0, 1, 2, 3, 4, 5, 6, 7}, 0.07);
+            coin = ADD_STATIC_SPRSHEET(RESOURCE_ENUM::C_FULL);
 
             //init arrow icons
             arrow[0] = ADD_STATIC_REN(A_0);
@@ -85,30 +70,30 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
             top = ADD_STATIC_REN(TOP);
             modify = ADD_STATIC_REN(MOD);
             toggle = ADD_STATIC_REN(TOGGLE);
-            boolean[0] = ADD_STATIC_REN(FALSE);
-            boolean[1] = ADD_STATIC_REN(TRUE);
+            boolean[0] = ADD_STATIC_REN(_FALSE);
+            boolean[1] = ADD_STATIC_REN(_TRUE);
 
 
             //Init Sub-Menu Icons
-            toad_mips = ADD_STATIC_REN(PNGS::TOAD_MIPS);
-            bowser = ADD_STATIC_REN(PNGS::BOWSER);
-            peach_painting = ADD_STATIC_REN(PNGS::PEACH);
-            sign = ADD_STATIC_REN(PNGS::SIGN);
-            door = ADD_STATIC_REN(PNGS::DOOR);
+            toad_mips = ADD_STATIC_REN(RESOURCE_ENUM::TOAD_MIPS);
+            bowser = ADD_STATIC_REN(RESOURCE_ENUM::BOWSER);
+            peach_painting = ADD_STATIC_REN(RESOURCE_ENUM::PEACH);
+            sign = ADD_STATIC_REN(RESOURCE_ENUM::SIGN);
+            door = ADD_STATIC_REN(RESOURCE_ENUM::DOOR);
 
             //init Switch icons
             //pge::ren * box_off = );
             for(uint16 i = 0; i < 3; i++){
                 for(uint8 i1 = 0; i1 < 2; i1++){
-                    cap_switches[i][i1] = ADD_STATIC_REN(PNGS::BLUE + (i * 2 + i1));
+                    cap_switches[i][i1] = ADD_STATIC_REN(RESOURCE_ENUM(RESOURCE_ENUM::BLUE + (i * 2 + i1)));
                 }
-                cap_boxes[i][1] = ADD_STATIC_REN(PNGS::BOX_VANISH + i);
-                cap_boxes[i][0] = ADD_STATIC_REN(PNGS::BOX_NONE);
+                cap_boxes[i][1] = ADD_STATIC_REN(RESOURCE_ENUM(RESOURCE_ENUM::BOX_VANISH + i));
+                cap_boxes[i][0] = ADD_STATIC_REN(RESOURCE_ENUM::BOX_NONE);
             }
 
             //init Save Icons
-            valid_save[0] = ADD_STATIC_REN(PNGS::SAVE_NOT_VALID);
-            valid_save[1] = ADD_STATIC_REN(PNGS::SAVE_VALID);
+            valid_save[0] = ADD_STATIC_REN(RESOURCE_ENUM::SAVE_NOT_VALID);
+            valid_save[1] = ADD_STATIC_REN(RESOURCE_ENUM::SAVE_VALID);
 
 
         }
@@ -167,8 +152,6 @@ void main_screen::draw_layer1(){
                 continue;
             if(pge->GetMouseX() > (i * SPACING + 150) && pge->GetMouseX() < ((i + 1) * SPACING + 150)){
                 cur_slot = i;
-                MusicSingleton::get().player.AddFile(SND_PATH "/mario.ogg", 200, false);
-                MusicSingleton::get().player.AddFile(SND_PATH "/paint.ogg", 200, false);
                 EEP_DAT::get().update();
             }
             if(pge->GetMouseX() < 120){
@@ -319,7 +302,6 @@ void main_screen::draw_layer2(float fElapsedTime){
             switch (index) {
                 case 15: //Cap switches were clicked
                     if(!(index_x < 3)) break;
-                    MusicSingleton::get().player.AddFile(SND_PATH "/box.ogg", 140, false);
                     switch (index_x) { //couldnt make this a array lookup because you cant take a address of a bitfeild
                         case 0: //vanish cap
                             cap_flags_byte->VanishCapSwitch ^= 1; //toggle bit
@@ -374,4 +356,43 @@ void main_screen::draw_layer2(float fElapsedTime){
         //Update the EEP because a action happend
         EEP_DAT::get().update();
     }
+}
+
+
+
+main_screen::~main_screen(){
+    delete this->coin;
+    delete this->colstars[0];
+    delete this->colstars[1];
+
+    rman::get().unload_texture(this->arrow[0]);
+    rman::get().unload_texture(this->arrow[1]);
+    rman::get().unload_texture(this->boolean[0]);
+    rman::get().unload_texture(this->boolean[1]);
+    rman::get().unload_texture(this->bowser);
+    rman::get().unload_texture(this->cannon[0]);
+    rman::get().unload_texture(this->cannon[1]);
+
+    for(int i = 0; i < 3; i++){
+        rman::get().unload_texture(this->cap_boxes[i][0]);
+        rman::get().unload_texture(this->cap_boxes[i][1]);
+
+        rman::get().unload_texture(this->cap_switches[i][0]);
+        rman::get().unload_texture(this->cap_switches[i][1]);
+    }
+
+    rman::get().unload_texture(this->door);
+    rman::get().unload_texture(this->modify);
+    
+    for(int i = 0; i < 15; i++){
+        rman::get().unload_texture(this->paintings[i]);
+    }
+
+    rman::get().unload_texture(this->peach_painting);
+    rman::get().unload_texture(this->sign);
+    rman::get().unload_texture(this->toad_mips);
+    rman::get().unload_texture(this->toggle);
+    rman::get().unload_texture(this->top);
+    rman::get().unload_texture(this->valid_save[0]);
+    rman::get().unload_texture(this->valid_save[1]);
 }

@@ -55,8 +55,9 @@ void FileSelect::Start(void * ret_data){
 }
 
 void FileSelect::init_main_buttons(){
+    int new_y = size.y - 25.0f;
     this->AddButton(
-        {0,size.y - 25},
+        {0, new_y},
         {75,25},
         "<",
         [](void * ptr){   
@@ -92,9 +93,10 @@ void FileSelect::init_main_buttons(){
     );
 #endif
 
-    if(select){
+    int new_x = size.x - 75;
+    if(this->select_mode){
         this->AddButton(
-            {size.x - 75, size.y - 25},
+            {new_x, new_y},
             {75,25},
             "Select",
             [](void * ptr){
@@ -105,7 +107,7 @@ void FileSelect::init_main_buttons(){
         );
     }else{
         this->AddButton(
-            {size.x - 75, size.y - 25},
+            {new_x, new_y},
             {75,25},
             "Open",
             [](void * ptr){
@@ -121,8 +123,10 @@ void FileSelect::init_main_buttons(){
         );
     }
 
+    new_x -= 75;
+
     this->AddButton(
-        {size.x - 75 - 75, size.y - 25},
+        {new_x , new_y},
         {75,25},
         "Cancel",
         [](void * ptr){
@@ -131,8 +135,9 @@ void FileSelect::init_main_buttons(){
         }
     );
 
+    new_x -= (50 + 75);
     this->AddButton(
-        {size.x - 75 - 75 - 75 - 50, size.y - 25},
+        {new_x, new_y},
         {75 + 25 + 25,25},
         "Show Hidden",
         [](void * ptr){
@@ -370,3 +375,8 @@ void FileSelect::AddItems() {
 }
 
 
+
+
+FileSelect::~FileSelect(){
+    
+}

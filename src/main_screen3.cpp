@@ -71,3 +71,8 @@ void main_screen3::run(float& fElapsedTime){
         DrawTextLine(10, 20 + (i * OPTION_SPACING), star_names[i], EEP_DAT::get().save_file_buffers[cur_slot].secret_star_states[i + 10]);
     }
 }
+
+
+main_screen3::~main_screen3(){
+
+}

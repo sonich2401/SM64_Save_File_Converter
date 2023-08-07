@@ -13,6 +13,7 @@
 
 Contact me at vgngamingnetwork@gmail.com if you need to contact me about this licence*/
 #define OLC_PGE_APPLICATION
+#define OLC_IMAGE_STB
 #include <olcPixelGameEngine.h>
 #include <_typedefs.h>
 
@@ -20,7 +21,7 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 #include "pgeClass.h"
 
 
-#include "../pic/imagelist.h"
+#include <resource/resources.h>
 #include "EEPROM/EEPROM.h"
 
 //Screens
@@ -29,7 +30,7 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 //#include "castle_stars.h"
 
 //Resorce manager
-#include "rman.h"
+#include <resource/resource_manager.h>
 
 
 
@@ -50,6 +51,8 @@ Example::Example()
 }
 
 bool Example::OnUserCreate() {
+    rman::get().pge = this;
+
 	// Called once at the start, so create things here
     EEP_DAT::get().init(); //Init EEPROM
     if(EEP_DAT::get().isCorrupted()){
@@ -62,8 +65,8 @@ bool Example::OnUserCreate() {
     this->change_state = true;
     next_state = -1;
 
-    cursor[0] = new pge::ren(paths[PNGS::CUR_OPEN]);
-    cursor[1] = new pge::ren(paths[PNGS::CUR_CLOSED]);
+    cursor[0] = ADD_STATIC_REN(RESOURCE_ENUM::CUR_OPEN);
+    cursor[1] = ADD_STATIC_REN(RESOURCE_ENUM::CUR_CLOSED);
 
         
     this->CreateLayer();
@@ -88,7 +91,6 @@ bool Example::OnUserUpdate(float fElapsedTime) {
         DrawStringDecal({ 0, 0 }, "Loading", olc::BLACK, { 10, 10 });
         if(cur_screen != nullptr)
             delete cur_screen;
-        rman::get().clear();
 
         for(uint8 i = 0; i < this->GetLayers().size(); i++){
             this->SetDrawTarget(i);
@@ -155,12 +157,6 @@ void Example::ChangeGamestate(uint8 state){
 
 int main(int argc, char* argv[])
 {
-    #ifdef DEBUG
-        for(string path : paths){
-            string cmd = "ls " + path;
-            system(cmd.c_str());
-        }
-    #endif
 #ifdef _WIN32
     ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
 #endif

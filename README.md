@@ -44,6 +44,13 @@ If it doesn't run then compile from source and use
 ```
 make
 ```
+
+or
+
+```
+sudo make install
+```
+
 while in the same directory.
 
 If building from source doesn't work, then you are out of options because wine will not help you.

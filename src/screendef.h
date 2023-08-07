@@ -82,6 +82,7 @@ class main_screen : public screen{
 
     public:
         main_screen(Example * olc, uint8 current_slot);
+        ~main_screen();
 
         void run(float& fElapsedTime);
 
@@ -94,13 +95,14 @@ class main_screen2 : public screen {
     public:
         main_screen2(Example* p, uint8 slot);
         void run(float& fElapsedTime);
+        ~main_screen2();
 };
 
 class main_screen3 : public screen {
     public:
         main_screen3(Example* p, uint8 slot);
         void run(float& fElapsedTime);
-
+        ~main_screen3();
 
 };
 
@@ -108,6 +110,7 @@ class main_screen4 : public screen {
     public:
         main_screen4(Example* p, uint8 slot);
         void run(float& fElapsedTime);
+        ~main_screen4();
 
 
 };
@@ -116,7 +119,7 @@ class main_screen5 : public screen {
     public:
         main_screen5(Example* p, uint8 slot);
         void run(float& fElapsedTime);
-
+        ~main_screen5();
 
 };
 

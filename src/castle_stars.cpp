@@ -108,3 +108,8 @@ void main_screen2::run(float& fElapsedTime){
             
     }
 }
+
+
+main_screen2::~main_screen2(){
+
+}

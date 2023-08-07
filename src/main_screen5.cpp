@@ -89,3 +89,8 @@ void main_screen5::run(float& fElapsedTime){
     DrawTextLine(10, 20 + (9 * OPTION_SPACING), gamestate_names[9], EEP_GET_SAVE(cur_slot)->GoodName.flags.Named.ProgressFlags.UpstairsDoorOpened);
     DrawTextLine(10, 20 + (10 * OPTION_SPACING), gamestate_names[10], EEP_GET_SAVE(cur_slot)->GoodName.flags.Named.CapStolenFlags_50StarDoor.DoorOpen_50star);
 }
+
+
+main_screen5::~main_screen5(){
+    
+}

@@ -1,92 +1,140 @@
-CC = g++
+CCX ?= clang
+CC ?= clang
 
-
-
-
-ifndef UNAME
-UNAME = $(shell uname)
-PIXEL_GAME_ENGINE_ARGS = -lX11 -lpng -lGL -lpthread -std=c++17
-CC_ARGS = -Ofast -Wno-unused-result $(PIXEL_GAME_ENGINE_ARGS) -ldl
+ifeq ($(CCX), clang)
+CC := clang
+OPT_FLAGS := -fno-stack-protector -flto -funsafe-math-optimizations -fno-signed-zeros -fcf-protection=none -mtune=native -fomit-frame-pointer
+WARN_FLAGS := -Wno-inconsistent-missing-override -Wno-unused-result -Wno-unknown-pragmas -Wno-unused-function -Wno-write-strings
 else
-PIXEL_GAME_ENGINE_ARGS = -ldwmapi -lGL -lpng -lopengl32 -lpthread  -lstdc++fs
-CC_ARGS = -std=c++17  -static -mwindows -Ofast $(PIXEL_GAME_ENGINE_ARGS)
+OPT_FLAGS := -fno-stack-protector -finline-small-functions -flto -faggressive-loop-optimizations -funsafe-math-optimizations -fno-signed-zeros -fsingle-precision-constant -fcf-protection=none -fvtable-verify=none -mtune=native -fomit-frame-pointer
+WARN_FLAGS := -Wno-unused-result -Wno-unknown-pragmas -Wno-unused-function -Wno-write-strings
 endif
 
-ifneq ($(UNAME), Linux)
-CC = wine "/mnt/Windows/Program Files (x86)/CodeBlocks/MinGW/bin/g++.exe"
-#CC = "/C/Program Files (x86)/CodeBlocks/MinGW/bin/g++.exe"
+UNAME = $(shell uname)
+
+ALL_DYNAMIC ?= true
+ifeq ($(TARGET), win32)
+DYNAMIC_LIBS_LIST = -luser32 -lgdi32 -lopengl32 -lgdiplus -lShlwapi -ldwmapi -lcomdlg32 -lstdc++fs -static-libgcc -static -pthread
+else
+STATIC_LIBS_LIST = -lc -lgcc -lstdc++ -lX11 -lstdc++fs -lxcb -lXau -lXdmcp
+DYNAMIC_LIBS_LIST = -lGL -ldl -lm -lpthread
 endif
 
-ODIR := build
+ifeq ($(ALL_DYNAMIC), true)
+DYNAMIC_LIBS := $(DYNAMIC_LIBS_LIST) $(STATIC_LIBS_LIST)
+else
+STATIC_LIBS := $(STATIC_LIBS_LIST)
+DYNAMIC_LIBS := $(DYNAMIC_LIBS_LIST)
+endif
+
+
+PIXEL_GAME_ENGINE_ARGS := -std=c++17
+CC_ARGS = $(WARN_FLAGS)
+CCX_ARGS = $(WARN_FLAGS) $(PIXEL_GAME_ENGINE_ARGS)
+
+ifeq ($(TARGET), win32)
+PIXEL_GAME_ENGINE_ARGS += -static-libstdc++
+DEFINES_DEF =
+else
+DEFINES_DEF = DATE="\"`date`\"" VER="\"$(VERSION)\"" PROG_NAME="\"$(BUILD)\"" OS_CLEAR="\"$(OS_CLEAR)\"" 
+#FORCE_EXPERIMENTAL_FS
+endif
+
+ODIR ?= build
+
 ROOT_DIRECTORY=.
 SOURCES := ${shell find ${ROOT_DIRECTORY} -type d -print}
 INCLUDE := ./include
 
-C_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.c) ) $(wildcard *.c)
+C_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.c) )
+C_FILES := $(filter-out ./include/sound/stb_vorbis.c,$(C_FILES))
 CPP_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.cpp) ) #$(wildcard *.cpp)
+ifeq ($(TARGET), win32)
+CPP_FILES := $(filter-out ./include/filesys/os/Linux/XFileSelector/utils/Window.cpp,$(CPP_FILES))
+CPP_FILES := $(filter-out ./include/filesys/os/Linux/XFileSelector/utils/MainWin.cpp,$(CPP_FILES))
+CPP_FILES := $(filter-out ./include/filesys/os/Linux/XFileSelector/FileSelect.cpp,$(CPP_FILES))
+endif
 H_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.h) ) $(wildcard *.h)
 
 ASM_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.asm) ) $(wildcard *.asm)
 S_FILES := $(foreach dir,$(SOURCES),  $(wildcard $(dir)/*.s) ) $(wildcard *.s)
 
-O_FILES = $(abspath $(addprefix $(ODIR)/, $(CPP_FILES:.cpp=.o)))
+O_FILES = $(abspath $(addprefix $(ODIR)/, $(CPP_FILES:.cpp=.o))) $(abspath $(addprefix $(ODIR)/, $(C_FILES:.c=.o)))
 
 
 
+VERSION := 1.1
+BUILD ?= sm64sfm
+DEFINE_PREFIX ?= -
+OS_CLEAR ?= clear
 
-VERSION := 1.0
-BUILD := sm64sfm
-DEFINE_PREFIX = -
-OS_CLEAR = clear
+FORCE_EXPERIMENTAL_FS ?= true
+DEBUG ?= false
 
-#ifndef $(INSTALL_PATH)
-#INSTALL_PATH = .
-#endif
-
-DEFINES_DEF := DATE="\"`date`\"" VER=\"$(VERSION)\" PROG_NAME=\"$(BUILD)\" OS_CLEAR=\"$(OS_CLEAR)\"
-
-ifndef $(DEBUG)
-DEBUG = false
-endif
 
 ifeq ($(DEBUG), true)
 DEFINES_DEF += DEBUG=$(DEBUG)
-CC_ARGS += -g
-endif
+CC_ARGS += -g -pg
+CCX_ARGS += -g -pg
 
-ifndef $(INSTALL_PATH)
-DEFINES_DEF += INSTALL_PATH=\"$(INSTALL_PATH)\"
+CC_ARGS += -Wall -Wfatal-errors -Wall -Wextra
+CCX_ARGS +=  -Wall  -Wfatal-errors -Wall -Wextra
+
+#CC_ARGS += -Og
+#CCX_ARGS += -Og
+else
+CC_ARGS += -Ofast
+CCX_ARGS += -Ofast
+
+CC_ARGS += $(OPT_FLAGS)
+CCX_ARGS += $(OPT_FLAGS)
 endif
 
 DEFINES = $(foreach def,$(DEFINES_DEF), $(DEFINE_PREFIX)D$(def))
-
-ifeq ($(UNAME), Windows)
-DEFINES = 
-endif
 
 
 $(ODIR)/./%.o : %.cpp
 	@echo $(notdir $(basename $*)).cpp
 	@mkdir -p $(dir $@)
-	@$(CC) -c $*.cpp -o $@ -I $(INCLUDE) $(CC_ARGS) $(DEFINES)
+	@$(CCX) -c $*.cpp -o $@ -I $(INCLUDE) $(CCX_ARGS) $(DEFINES)
 
+$(ODIR)/./%.o : %.c
+	@echo $(notdir $(basename $*)).c
+	@mkdir -p $(dir $@)
+	@$(CC) -c $*.c -o $@ -I $(INCLUDE) $(CC_ARGS) $(DEFINES)
+	
+	
+THREAD_COUNT ?= $(grep -c processor /proc/cpuinfo)
+RELEASE_FOLDER ?= release_build
+DEBUG_FOLDER ?= debug_build
 
 .PHONY: all
 .PHONY: message
 .PHONY: compile
-.PHONY: wine_release
-.PHONY: wine_deubg
-.PHONY: touch_all
-.PHONY: install
-.PHONY: uninstall
+.PHONY: release_compile
+.PHONY: build
+.PHONY: debug
+.PHONY: release
 
-.PHONY: delete_path_macro_objects
+$(BUILD): release
 
-all: compile run
-	
+all: clean compile run
 
-compile: message $(addprefix $(ODIR)/, $(CPP_FILES:.cpp=.o)) | $(ODIR)
-	@$(CC) $(O_FILES) -o $(BUILD) -I $(INCLUDE) $(CC_ARGS) $(DEFINES) 
+
+compile: $(addprefix $(ODIR)/, $(CPP_FILES:.cpp=.o)) $(addprefix $(ODIR)/, $(C_FILES:.c=.o)) | $(ODIR)
+	@echo "Linking ..."
+#$(CCX) $(O_FILES) -o $(BUILD) -I $(INCLUDE) $(CC_ARGS) $(CCX_ARGS) $(DEFINES) $(DYNAMIC_LIBS) ${shell ./maybestatic.sh  $(STATIC_LIBS) }
+	@$(CCX) $(O_FILES) -o $(BUILD) -I $(INCLUDE) $(CC_ARGS) $(CCX_ARGS) $(DEFINES) $(DYNAMIC_LIBS)
+
+#@printf " $(subst ",\", ${shell ./maybestatic.sh  $(STATIC_LIBS) })" >> link.sh
+#	@chmod +x ./link.sh
+#	@./link.sh
+	@echo "\033[32;1mDone!\033[30;0m"
+
+
+release_compile: compile
+	@strip $(BUILD) -o $(BUILD).tmp
+	@mv $(BUILD).tmp $(BUILD)
 
 message:
 	@echo Building ...
@@ -94,53 +142,48 @@ message:
 	@echo "\tTarget = $(UNAME)"
 	@echo "\tVersion = $(VERSION)"
 	@echo "\tC++ Files to Compile = $(words $(CPP_FILES))"
+	@echo "\tC Files to Compile = $(words $(C_FILES))"
 	
 $(ODIR):
 	@mkdir -p $@
 
-$(BUILD): compile
+link:
+	@echo $(CCX) $(O_FILES) -o $(BUILD) -I $(INCLUDE) $(CC_ARGS) $(CCX_ARGS) $(DEFINES)
 
 run:
 	@./$(BUILD)
 
 clean:
 	@rm -rf $(ODIR)
+	@rm -rf $(RELEASE_FOLDER)
+	@rm -rf $(DEBUG_FOLDER)
 	@rm -rf x64
 	@rm -rf Debug
 	@rm -rf Release
+	@rm -rf .vs
+	@rm -rf $(BUILD)
 
+debug:
+	@$(MAKE) message DEBUG=true --no-print-directory
+	@$(MAKE) -j $(THREAD_COUNT) compile ODIR="$(DEBUG_FOLDER)" DEBUG=true --no-print-directory
 
-INSTALL_DIR = /usr/bin/$(BUILD)
+release:
+	@$(MAKE) message --no-print-directory
+	@$(MAKE) -j $(THREAD_COUNT) release_compile ODIR="$(RELEASE_FOLDER)" --no-print-directory
+
 DESKTOP_SHORTCUT_DIR = /usr/share/applications
 install:
 	@$(MAKE) clean --no-print-directory
-	@$(MAKE) compile INSTALL_PATH=\"$(INSTALL_DIR)\" --no-print-directory
+	@$(MAKE) compile -j $(THREAD_COUNT) --no-print-directory
 #files belong to root now so allow all users to access them again
 	@chmod -R +rwx build
-#create install location
-	@mkdir -p $(INSTALL_DIR)
-#install exectauable
-	@cp ./$(BUILD) $(INSTALL_DIR)/$(BUILD)
-	@chmod +x $(INSTALL_DIR)/$(BUILD)
-#create an alias
-	@rm -rf /usr/bin/sm64fm
-	@ln -s $(INSTALL_DIR)/$(BUILD) /usr/bin/sm64fm
-
-#install resources
-	@cp -r ./pic $(INSTALL_DIR)/pic
-	@cp -r ./snd $(INSTALL_DIR)/snd
-	@cp ./LICENCE $(INSTALL_DIR)/LICENCE
-	@chmod u=r $(INSTALL_DIR)/LICENCE
-	@chmod -R u=r $(INSTALL_DIR)/pic
-	@chmod -R u=r $(INSTALL_DIR)/snd
-
-#install updater
-	@cp ./linux_only_tools/updater.sh $(INSTALL_DIR)/$(BUILD)_updater.sh
-	@chmod +x $(INSTALL_DIR)/$(BUILD)_updater.sh
+	@mkdir -p /usr/local/bin
+	@cp ./$(BUILD) /usr/local/bin
+	@chmod +x /usr/local/bin/$(BUILD)
 	
 #install desktop/start menu shortcut
-	@cp ./linux_only_tools/$(BUILD).desktop $(DESKTOP_SHORTCUT_DIR)/$(BUILD).desktop
-	@chmod +x $(DESKTOP_SHORTCUT_DIR)/$(BUILD).desktop
+	@cp ./linux_only_tools/$(BUILD).desktop $(DESKTOP_SHORTCUT_DIR)/sm64sfm.desktop
+	@chmod +x $(DESKTOP_SHORTCUT_DIR)/sm64sfm.desktop
 
 	@$(MAKE) clean --no-print-directory
 	@echo Installed Successfully!
@@ -151,21 +194,3 @@ uninstall:
 	@rm -f /usr/bin/sm64fm
 
 	@echo Deleted Successfully!
-
-debug:
-	@$(MAKE) DEBUG=true --no-print-directory
-release:
-	@$(MAKE) --no-print-directory
-
-
-touch_all:
-	@find . -type f -exec touch {} +
-
-restore_rights:
-	@chmod -R +rwx $(BUILD)
-	@chmod -R +rwx pic
-	@chmod -R +rwx snd
-	@chmod -R +rwx src
-
-print_Def:
-	@echo $(DEFINES)

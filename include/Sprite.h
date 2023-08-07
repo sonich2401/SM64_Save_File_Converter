@@ -14,6 +14,6 @@
 Contact me at vgngamingnetwork@gmail.com if you need to contact me about this licence*/
 #pragma once
 
-#include "animation/ren.h"
-#include "animation/aniren.h"
-#include "animation/SprSheet.h"
+#include "animation/ren/ren.h"
+#include "animation/aniren/aniren.h"
+#include "animation/SprSheet/SprSheet.h"
