@@ -63,7 +63,7 @@ O_FILES = $(abspath $(addprefix $(ODIR)/, $(CPP_FILES:.cpp=.o))) $(abspath $(add
 
 
 
-VERSION := 1.1
+VERSION := 1.1.1
 BUILD ?= sm64sfm
 DEFINE_PREFIX ?= -
 OS_CLEAR ?= clear
