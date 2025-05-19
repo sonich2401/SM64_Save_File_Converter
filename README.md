@@ -52,6 +52,20 @@ while in the same directory.
 If building from source doesn't work, then you are out of options because wine will not help you.
 Contact me in the issues tab if building from source doesn't work
 
+
+## Compiling
+### Linux
+Run this command while in the source directory
+```
+make
+```
+
+### Windows
+Install Mingw64 with gcc and g++ and make. Then run this command while in the source directory
+```
+make TARGET=win32
+```
+
 ## WARNING FOR LINUX USERS
 DO NOT USE any version below version 1.0 of this program. Older demo builds will erase your save!!!!
 As of version 1.0 it is 100% safe to edit your save files
