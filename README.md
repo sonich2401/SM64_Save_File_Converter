@@ -31,9 +31,6 @@ Holding down Ctrl also makes you scroll down faster
 ## Installing
 ### Windows
 Get a .exe from [the releases page](https://github.com/sonich2401/SM64_Save_File_Converter/releases) and run it.
-It will prompt you to choose a location to install the program.
-It will create a folder with a new .exe which will open the program
-After this is done, you can delete the .exe that you downloaded from the releases page.
 
 ### Linux
 The program has minimal dependancies and doesn't require you to be running a specific desktop enviroment as long as you have X11 and OpenGL.
