@@ -31,7 +31,6 @@ namespace SAVE_FORMATS
 		EEPROM* buffer = (EEPROM*)malloc(512);
 		buffer = (EEPROM*)memcpy(buffer, eep, 512);
 		FORMAT saveFormat = detect(magic, checksum);
-		uint16_t chksm;
 
 		if(saveFormat == desired_format)
 			return buffer;

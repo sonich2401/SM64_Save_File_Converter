@@ -332,7 +332,7 @@ void main_screen::draw_layer2(float fElapsedTime){
                 break;
                             
                 default: //Stars were clicked
-                    if(index > 15 || index < 0)
+                    if(index > 15)
                         break;
                     uint8 * byte = &EEP_DAT::get().edited->named.Slots.slots2D[cur_slot][0].GoodName.level_data.levels_indexed[index].byte;
                     if(index_x < 8){

@@ -47,6 +47,7 @@ main_screen2::main_screen2(Example * olc, uint8 current_slot) : screen(olc, curr
 }
 
 void main_screen2::run(float& fElapsedTime){
+    (void)fElapsedTime;
     pge->Clear(olc::GREY);
 
     int selected = -1;

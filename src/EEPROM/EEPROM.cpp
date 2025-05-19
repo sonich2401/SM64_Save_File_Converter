@@ -13,6 +13,7 @@
 
 Contact me at vgngamingnetwork@gmail.com if you need to contact me about this licence*/
 #include "EEPROM.h"
+#include "../../include/filesys/load_bin.h"
 
 
 EEP_DAT::EEP_DAT(){
@@ -71,7 +72,7 @@ void EEP_DAT::init(){
 
 void EEP_DAT::load(){
 
-    string path = openFile("Please Select a SM64 Rom ...");
+    std::string path = openFile("Please Select a SM64 Rom ...");
 
     if(path != "" && path != "...END" && path != "NULL"){
         char * save_data = load_bin(path.c_str());
@@ -84,14 +85,14 @@ void EEP_DAT::load(){
     #if IS_LITTLE_ENDIAN
         if(format == SAVE_FORMATS::N64 || format == SAVE_FORMATS::EMU){
             EEPROM* tmp = SAVE_FORMATS::convert(edited, SAVE_FORMATS::PC);
-            delete edited;
+            free(edited);
             edited = tmp;
 
         }
     #else
         if(format == SAVE_FORMATS::PC){
             EEPROM* tmp = SAVE_FORMATS::convert(edited, SAVE_FORMATS::N64);
-            delete edited;
+            free(edited);
             edited = tmp;
         }
     #endif
@@ -246,7 +247,7 @@ bool EEP_DAT::isCorrupted(){
 }
 
 void EEP_DAT::fix_corruption(){
-    for(char i = 0; i < 8; i++){
+    for(int i = 0; i < 8; i++){
         if(!edited->named.Slots.slotsArray[i].GoodName.flags.Named.ProgressFlags.ValidGame){
             bool isStars = false;
             for(uint8_t level = 0; level < 15; level++){

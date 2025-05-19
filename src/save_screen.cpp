@@ -29,6 +29,7 @@ save_screen::save_screen(Example * olc, uint8 current_slot) : screen(olc, curren
 
 
 void save_screen::run(float& fElapsedTime){
+    (void)fElapsedTime;
     pge->SetDrawTarget((uint8)0);
     pge->Clear(olc::Pixel(0,0,0,0));
     pge->SetDrawTarget((uint8)1);

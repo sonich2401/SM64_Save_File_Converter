@@ -66,7 +66,7 @@ public:
 
 	//void unload_texture(unsigned int index);
 
-	const RESOURCE_ENUM get_res_from_ptr(const pge::texture* __restrict__ o_ptr);
+	RESOURCE_ENUM get_res_from_ptr(const pge::texture* __restrict__ o_ptr);
 
 public:
 	rman(rman const&) = delete;

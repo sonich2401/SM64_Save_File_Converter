@@ -1,5 +1,5 @@
-CCX ?= clang
-CC ?= clang
+CCX ?= g++
+CC ?= gcc
 
 ifeq ($(CCX), clang)
 CC := clang

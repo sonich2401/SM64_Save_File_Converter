@@ -71,7 +71,7 @@ time_t getFileModifiedTime(const char * filePath);
 
 union Color{
     Color();
-    Color(std::string fn, Display * dis, Window win);
+    Color(std::string fn, Display * dis);
     Color(unsigned char r, unsigned char g, unsigned char b);
     Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
@@ -174,5 +174,5 @@ class MainWin{
     void Clear();
 
     public:
-        ~MainWin();
+        virtual ~MainWin();
 };

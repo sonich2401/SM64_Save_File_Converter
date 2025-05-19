@@ -23,7 +23,7 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 Color aqua;
 MainWin::MainWin(std::string title, v2d<unsigned int> dimentions){
     /* get the colors black and white (see section for details) */        
-    unsigned long black,white, grey;
+    unsigned long white, grey;
 
     //Init Display
     dis=XOpenDisplay((char *)0);
@@ -31,7 +31,6 @@ MainWin::MainWin(std::string title, v2d<unsigned int> dimentions){
     scroll = 0;
         
     //Init colors
-    black=BlackPixel(dis,screen),
     white=WhitePixel(dis, screen);
     grey = Color(57, 57, 58, 1).bytes;
 
@@ -51,7 +50,7 @@ MainWin::MainWin(std::string title, v2d<unsigned int> dimentions){
     XClearWindow(dis, win);
     XMapRaised(dis, win);
 
-    aqua = Color("Aqua", dis, win);
+    aqua = Color("Aqua", dis);
 }
 
 void MainWin::Redraw(){
@@ -60,10 +59,9 @@ void MainWin::Redraw(){
 
 
 void MainWin::Event(XEvent * event){
-    const float SCROLL_SPEED = 2.1f;
             
     if (event->type == ConfigureNotify)
-        if(event->xconfigure.width != size.x || event->xconfigure.height != size.y)
+        if((unsigned int)event->xconfigure.width != size.x || (unsigned int)event->xconfigure.height != size.y)
             XResizeWindow(dis, win,size.x,size.y);
 
     if(event->type == ButtonPress){
@@ -80,6 +78,7 @@ void MainWin::Start(void * ret_data){
         Event(&event);
         Redraw();
     }
+    (void)ret_data;
 }
 
 void MainWin::DrawLine(unsigned int x, unsigned int y, unsigned int x1, unsigned int y1){

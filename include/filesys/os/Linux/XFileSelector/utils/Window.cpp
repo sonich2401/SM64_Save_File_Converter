@@ -43,7 +43,7 @@ std::vector<std::string> split(std::string str, std::string term){
     std::string cur_line = "";
 
     for(unsigned int i = 0; i < str.size(); i++){
-        if(i + term.size() < str.size())
+        if(i + term.size() < str.size()){
             if(str.substr(i, term.size()) != term)
                 cur_line += str[i];
             else{
@@ -51,7 +51,7 @@ std::vector<std::string> split(std::string str, std::string term){
                 ret.push_back(cur_line);
                 cur_line = "";
             }
-
+        }
     }
     if(cur_line != "")
         ret.push_back(cur_line);
@@ -89,7 +89,7 @@ Color::Color(unsigned char r, unsigned char g, unsigned char b){
     this->xcmsColor.spec.RGB.blue = b;
 }
 
-Color::Color(std::string fn, Display * dis, Window win){
+Color::Color(std::string fn, Display * dis){
     int s = DefaultScreen(dis);
     Colormap colormap = DefaultColormap(dis, s);
     XColor used, unused;

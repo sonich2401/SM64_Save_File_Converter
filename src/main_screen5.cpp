@@ -43,6 +43,7 @@ main_screen5::main_screen5(Example * olc, uint8 current_slot) : screen(olc, curr
 
 
 void main_screen5::run(float& fElapsedTime){
+    (void)fElapsedTime;
     pge->Clear(olc::GREY);
 
     const auto DrawTextLine = [&](int x, int y, std::string name, bool state){
@@ -59,7 +60,7 @@ void main_screen5::run(float& fElapsedTime){
         if(selected >= 11)
             selected = 10;
         
-        uint8 tmp_val;
+        
         switch(selected){
             case 8:
                 EEP_GET_SAVE(cur_slot)->GoodName.flags.Named.ProgressFlags.BasementDoorOpened = !EEP_GET_SAVE(cur_slot)->GoodName.flags.Named.ProgressFlags.BasementDoorOpened;

@@ -27,6 +27,7 @@ void pge::Tileset::DrawTile(float x, float y, unsigned int index, olc::vf2d scal
 }
 
 void pge::Tileset::DrawTile(float x, float y, olc::vi2d tile_cords, olc::vf2d scale) {
+	(void)scale;
 	pge->DrawPartialDecal({ x,y }, sheet->dcl, tile_cords * dimentions, dimentions);
 }
 

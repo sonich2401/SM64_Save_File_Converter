@@ -3536,9 +3536,9 @@ void PixelGameEngine::DrawPartialDecal(const olc::vf2d& pos, olc::Decal* decal, 
 		fFrameTimer += fElapsedTime;
 		nFrameCount++;
 		#ifdef DEBUG
-		static std::string sTitle = "Debug Version - FPS:                              "; //Allow for 30 digits by adding spacebars
+		static std::string sTitle = "Debug Version - olcPixelGameEngine - FPS:                              ";
 		#else
-		static std::string sTitle = "Release Version - FPS:                              "; //Allow for 30 digits by adding spacebars
+		static std::string sTitle = "Release Version - olcPixelGameEngine - FPS:                              "; 
 		#endif
 		if (fFrameTimer >= 1.0f)
 		{
@@ -3546,15 +3546,15 @@ void PixelGameEngine::DrawPartialDecal(const olc::vf2d& pos, olc::Decal* decal, 
 			fFrameTimer -= 1.0f;
 #ifndef _WIN32
 			#ifdef DEBUG
-				sprintf((char*)sTitle.c_str() + strlen("Debug Version - FPS: "), "%i", nFrameCount);
+				sprintf((char*)sTitle.c_str() + strlen("Debug Version - olcPixelGameEngine - FPS: "), "%i", nFrameCount);
 			#else
-				sprintf((char*)sTitle.c_str() + strlen("Release Version - FPS: "), "%i", nFrameCount);
+				sprintf((char*)sTitle.c_str() + strlen("Release Version - olcPixelGameEngine - FPS: "), "%i", nFrameCount);
 			#endif
 #else
 			#ifdef DEBUG
-				sTitle = "Debug Version - FPS: " + std::to_string(nFrameCount);
+				sTitle = "Debug Version - olcPixelGameEngine - FPS: " + std::to_string(nFrameCount);
 			#else
-				sTitle = "Release Version - FPS: " + std::to_string(nFrameCount);
+				sTitle = "Release Version - olcPixelGameEngine" + std::to_string(nFrameCount);
 			#endif
 #endif
 			platform->SetWindowTitle(sTitle);
@@ -3624,8 +3624,8 @@ void PixelGameEngine::DrawPartialDecal(const olc::vf2d& pos, olc::Decal* decal, 
 	PGEX::PGEX(bool bHook) { if(bHook) pge->pgex_Register(this); }
 	void PGEX::OnBeforeUserCreate() {}
 	void PGEX::OnAfterUserCreate()	{}
-	bool PGEX::OnBeforeUserUpdate(float& fElapsedTime) { return false; }
-	void PGEX::OnAfterUserUpdate(float fElapsedTime) {}
+	bool PGEX::OnBeforeUserUpdate(float& fElapsedTime) { (void)fElapsedTime;return false; }
+	void PGEX::OnAfterUserUpdate(float fElapsedTime) {(void)fElapsedTime;}
 
 	// Need a couple of statics as these are singleton instances
 	// read from multiple locations
@@ -3724,6 +3724,7 @@ namespace olc
 
 		olc::rcode CreateDevice(std::vector<void*> params, bool bFullScreen, bool bVSYNC) override
 		{
+			(void)bFullScreen;
 #if defined(OLC_PLATFORM_WINAPI)
 			// Create Device Context
 			glDeviceContext = GetDC((HWND)(params[0]));
@@ -4007,6 +4008,7 @@ namespace olc
 
 		void ReadTexture(uint32_t id, olc::Sprite* spr) override
 		{
+			(void)id;
 			glReadPixels(0, 0, spr->width, spr->height, GL_RGBA, GL_UNSIGNED_BYTE, spr->GetData());
 		}
 
@@ -4873,6 +4875,8 @@ namespace olc
 
 		olc::rcode SaveImageResource(olc::Sprite* spr, const std::string& sImageFile) override
 		{
+			(void)spr;
+			(void)sImageFile;
 			return olc::rcode::OK;
 		}
 	};
@@ -5158,6 +5162,9 @@ namespace olc
 			// Grab the deafult display and window
 			olc_Display = XOpenDisplay(NULL);
 			olc_WindowRoot = DefaultRootWindow(olc_Display);
+
+			if(olc_Display == NULL)
+				abort();
 
 			// Based on the display capabilities, configure the appearance of the window
 			GLint olc_GLAttribs[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };

@@ -126,12 +126,12 @@ void rman::unload_texture(pge::texture* tex){
 	#ifdef DEBUG
 		fprintf(stderr, "ERR: Texture %p is not a texture that was loaded via the resource manager!\n", tex);
 		fprintf(stderr, "Attempting translation ...\nAssuming it was a pge::ren* ...\n");
-		fprintf(stderr, "size w = %lu, h = %lu\n", ((pge::ren*)tex)->spr->width, ((pge::ren*)tex)->spr->height);
+		fprintf(stderr, "size w = %u, h = %u\n", ((pge::ren*)tex)->spr->width, ((pge::ren*)tex)->spr->height);
 		abort();
 	#endif
 }
 
-const RESOURCE_ENUM rman::get_res_from_ptr(const pge::texture* __restrict__ o_ptr){
+RESOURCE_ENUM rman::get_res_from_ptr(const pge::texture* __restrict__ o_ptr){
 	for(const auto& ele : this->resources){
 		if(ele.dat == (pge::texture*)o_ptr){
 			return ele.id;
@@ -148,7 +148,7 @@ rman::~rman() {
 	#ifdef DEBUG
 		fprintf(stderr, "INFO: Resources allocated at shutdown %lu\n", this->resources.size());
 		for(size_t i = 0; i < this->resources.size(); i++){
-			fprintf(stderr, "### ELEMENT %lu ###\n\tID: %lu\n\tReference count %lu\n\n", i, this->resources[i].id, this->resources[i].ref_count);
+			fprintf(stderr, "### ELEMENT %lu ###\n\tID: %u\n\tReference count %i\n\n", i, this->resources[i].id, this->resources[i].ref_count);
 		}
 
 	#endif

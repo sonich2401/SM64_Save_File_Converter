@@ -27,7 +27,7 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 
 class FileSelect : public MainWin{
     public:
-        FileSelect(std::string title, v2d<unsigned int> dimentions, bool save_mode, bool isPipe = false, bool select_mode = true);
+        FileSelect(std::string title, v2d<unsigned int> dimentions, bool isPipe = false, bool select_mode = true);
 
         ~FileSelect();
     public:

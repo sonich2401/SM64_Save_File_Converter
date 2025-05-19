@@ -16,16 +16,12 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 #include <string.h>
 #include "os/Linux/XFileSelector/utils/FileUtils.h"
 
-char * load_bin(const cstring file_path, bool zero){
+char * load_bin(const char* file_path){
     fu_BinFile file = fu_load_bin_file(file_path);
     char* buffer = (char*)malloc(file.size);
     buffer = (char*)memcpy(buffer, file.bin, file.size);
     fu_free_bin_file(file);
     return (char*)buffer;
-}
-
-char * load_bin(const char * file_path, bool zero){
-    return load_bin((cstring)file_path, zero);
 }
 
 void write_bin(const cstring fn, unsigned char * buffer, uint32 buffer_size){

@@ -37,7 +37,7 @@ static void byte_swap(T * ptr){
 	T og_val = *ptr;
 	unsigned char * chr_array = (unsigned char*)&og_val;
 
-	for(int i = 0; i < (sizeof(T) / 2); i++){
+	for(size_t i = 0; i < (sizeof(T) / 2); i++){
 		int mirrored_index = sizeof(T) - i - 1;
 
 		unsigned char tmp_val = chr_array[i];

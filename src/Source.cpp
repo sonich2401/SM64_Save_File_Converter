@@ -157,6 +157,8 @@ void Example::ChangeGamestate(uint8 state){
 
 int main(int argc, char* argv[])
 {
+    (void)argc;
+    (void)argv;
 #ifdef _WIN32
     ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
 #endif

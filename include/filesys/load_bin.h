@@ -17,8 +17,7 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 #include <stdlib.h>
 #include <_typedefs.h>
 
-char * load_bin(const cstring fp, bool zero = false);
+char * load_bin(const char* fp);
 
-char * load_bin(const char * fp, bool zero = false);
 
 void write_bin(const cstring fn, unsigned char * buffer, uint32 buffer_size);

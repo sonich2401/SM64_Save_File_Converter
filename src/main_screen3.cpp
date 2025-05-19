@@ -48,6 +48,7 @@ main_screen3::main_screen3(Example * olc, uint8 current_slot) : screen(olc, curr
 
 void main_screen3::run(float& fElapsedTime){
     pge->Clear(olc::GREY);
+    (void)fElapsedTime;
 
     const auto DrawTextLine = [&](int x, int y, std::string name, bool state){
         pge->FillRect({ x + 2, y }, { ((int)(name.size() * WORD_SPACING)),WORD_SPACING }, olc::WHITE);

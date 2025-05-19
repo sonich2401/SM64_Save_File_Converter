@@ -36,6 +36,7 @@ class screen{
     public:
         virtual void run(float& fElapsedTime){
             //do crap
+            (void)fElapsedTime;
         }
     public:
         Example * pge;

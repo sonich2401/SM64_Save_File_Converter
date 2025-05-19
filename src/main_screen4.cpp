@@ -38,6 +38,7 @@ main_screen4::main_screen4(Example *olc, uint8 current_slot) : screen(olc, curre
 
 void main_screen4::run(float &fElapsedTime)
 {
+    (void)fElapsedTime;
     pge->Clear(olc::GREY);
 
     const auto DrawTextLine = [&](int x, int y, std::string name, bool state)

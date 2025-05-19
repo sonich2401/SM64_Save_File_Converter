@@ -355,7 +355,6 @@ fu_List fu_helper__get_dir_contents(char * __restrict__ folder, bool folders, bo
   struct dirent* dir;
   unsigned long long element_count = 0;
 
-  char* p;
 
   while((dir = readdir(d)) != NULL){
     //Get rid of "." and ".." directory entries
@@ -381,7 +380,6 @@ fu_List fu_helper__get_dir_contents(char * __restrict__ folder, bool folders, bo
     }else{
       ret = (char**)realloc(ret, sizeof(char*) * (element_count + 1));
     }
-    p = ret[0];
     //printf("ELEMENT %i\n", element_count);
     ret[element_count] = (char*)malloc(256);
     strcpy(ret[element_count], dir->d_name);
@@ -521,7 +519,7 @@ fu_BinFile fu_load_bin_file(const char * __restrict__ file_path){
     //fread(buffer, fsize, fsize, f);
   #else
     char* ret_buffer = (char*)malloc(fsize);
-    fread(ret_buffer, fsize, fsize, f);
+    fread(ret_buffer, 1, fsize, f);
   #endif
 
   fclose(f);
@@ -535,15 +533,15 @@ fu_BinFile fu_load_bin_file(const char * __restrict__ file_path){
 fu_TextFile fu_load_text_file(const char * __restrict__ file_path){
   fu_BinFile binfile = fu_load_bin_file(file_path);
   char* buffer = binfile.bin;
-  char* og_buffer_ptr = buffer;
+  //char* og_buffer_ptr = buffer;
 
   //Get total amount of lines
   unsigned long long nline_count = 1;
-  unsigned long long nline_last = -1;
+  //unsigned long long nline_last = -1;
   for(unsigned long long i = 0; i < strlen(buffer); i++){
     if(buffer[i] == '\n'){
       nline_count++;
-      nline_last = i;
+      //nline_last = i;
     }
   }
   //was there text at the end that we missed?

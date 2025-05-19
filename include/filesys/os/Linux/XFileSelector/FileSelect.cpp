@@ -24,7 +24,7 @@ Contact me at vgngamingnetwork@gmail.com if you need to contact me about this li
 
 FileSelect* fsel;
 
-FileSelect::FileSelect(std::string title, v2d<unsigned int> dimentions, bool save_mode, bool isPipe, bool select_mode) : MainWin(title, dimentions){
+FileSelect::FileSelect(std::string title, v2d<unsigned int> dimentions, bool isPipe, bool select_mode) : MainWin(title, dimentions){
     this->select_mode = select_mode;
     this->end = false;
     this->isPipe = isPipe;
@@ -64,6 +64,7 @@ void FileSelect::init_main_buttons(){
             fsel->scroll = 0;        
             fsel->curdir.upDirectory();
             fsel->RefreshItemList();
+            (void)ptr;
         }
     );
 
@@ -103,6 +104,7 @@ void FileSelect::init_main_buttons(){
                 fsel->end = true;
                 fsel->curdir.cd(fsel->dircontents[fsel->selected].name);
                 fsel->ret = fsel->curdir.getFullDir();
+                (void)ptr;
             }
         );
     }else{
@@ -119,6 +121,7 @@ void FileSelect::init_main_buttons(){
                     std::string cmd = "xdg-open \"" + fsel->curdir.getFullDir() + "/" + fsel->dircontents[fsel->selected].name + "\"";
                     system(cmd.c_str());
                 }
+                (void)ptr;
             }
         );
     }
@@ -132,6 +135,7 @@ void FileSelect::init_main_buttons(){
         [](void * ptr){
             fsel->end = true;
             fsel->ret = "...END";
+            (void)ptr;
         }
     );
 
@@ -143,6 +147,7 @@ void FileSelect::init_main_buttons(){
         [](void * ptr){
             fsel->show_hidden = !fsel->show_hidden;
             fsel->RefreshItemList();
+            (void)ptr;
         }
     );
 
@@ -156,6 +161,7 @@ void FileSelect::init_main_buttons(){
         [](void * ptr){
             fsel->curdir.setDirectory("/home/" + fsel->usr);
             fsel->RefreshItemList();
+            (void)ptr;
         }
     );
 
@@ -236,10 +242,10 @@ void FileSelect::RefreshItemList(){
     fu_List tmp1 = fu_get_dir_folders((char*)this->curdir.getFullDir().c_str(), show_hidden);
     
     //directory type
-    for(int i = 0; i < tmp1.size; i++)
+    for(long long unsigned int i = 0; i < tmp1.size; i++)
         this->dircontents.push_back({tmp1.text[i], 2});
     //file type
-    for(int i = 0; i < tmp.size; i++)
+    for(long long unsigned int i = 0; i < tmp.size; i++)
         this->dircontents.push_back({tmp.text[i], 1});
 
     fu_free_list(tmp);
@@ -303,7 +309,7 @@ void FileSelect::Redraw(){
     this->Clear();
 
     //DrawBackground Of selected option if it exists
-    if(dircontents.size() != 0 && selected >= 0){
+    if(dircontents.size() != 0){
         FillRect(buttons[static_buttons_count].x, scroll + selected * 25, buttons[static_buttons_count].width, 25, Color(40,40,40,40));
     }
 
@@ -325,7 +331,7 @@ void FileSelect::ClearItems(){
     this->scroll = 0;
     this->dircontents.clear();
     auto total_iterations = buttons.size() - static_buttons_count; //IDK why but moving it here out of the for loop fixes it
-    for(auto i = 0; i < total_iterations; i++){
+    for(long unsigned int i = 0; i < total_iterations; i++){
         buttons.pop_back();
     }
     Clear();
@@ -336,7 +342,7 @@ void FileSelect::AddItems() {
     #define BUTTON_SIZE 25
     //XFontStruct* font_info = XLoadQueryFont(dis, "fixed");
 
-    int max_size=0;
+    size_t max_size=0;
     // max_size = XTextWidth(font_info, dircontents[i].c_str(), dircontents[i].size());
     for(unsigned int i = 0; i < this->dircontents.size(); i++){
         if(max_size < 7 * dircontents[i].name.size())
